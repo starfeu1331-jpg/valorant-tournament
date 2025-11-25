@@ -4,6 +4,8 @@ import { signIn } from 'next-auth/react'
 import { Button } from '@/components/ui/button'
 import { useSearchParams } from 'next/navigation'
 
+export const dynamic = 'force-dynamic'
+
 export default function SignInPage() {
   const searchParams = useSearchParams()
   const callbackUrl = searchParams.get('callbackUrl') || '/'
