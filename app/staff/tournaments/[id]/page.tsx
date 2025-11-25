@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button'
 import { ValidateTeamButton } from '@/components/staff/validate-team-button'
 import { GenerateBracketButton } from '@/components/staff/generate-bracket-button'
 import { UpdateStatusButton } from '@/components/staff/update-status-button'
+import { RemoveTeamButton } from '@/components/staff/remove-team-button'
 
 export default async function ManageTournamentPage({
   params,
@@ -60,19 +61,20 @@ export default async function ManageTournamentPage({
   const pendingTeams = tournament.tournamentTeams.filter(tt => tt.status === 'PENDING')
   const acceptedTeams = tournament.tournamentTeams.filter(tt => tt.status === 'ACCEPTED')
   const rejectedTeams = tournament.tournamentTeams.filter(tt => tt.status === 'REJECTED')
+  const removedTeams = tournament.tournamentTeams.filter(tt => tt.status === 'REMOVED')
   const withdrawRequests = tournament.tournamentTeams.filter(tt => tt.status === 'WITHDRAW_REQUESTED')
 
-  // Récupérer les modérateurs qui ont refusé des équipes
-  const rejectorIds = rejectedTeams
+  // Récupérer les modérateurs qui ont refusé/retiré des équipes
+  const moderatorIds = [...rejectedTeams, ...removedTeams]
     .map(tt => tt.rejectedBy)
     .filter((id): id is string => id !== null)
   
-  const rejectors = await prisma.user.findMany({
-    where: { id: { in: rejectorIds } },
+  const moderators = await prisma.user.findMany({
+    where: { id: { in: moderatorIds } },
     select: { id: true, username: true }
   })
 
-  const rejectorsMap = new Map(rejectors.map(u => [u.id, u.username]))
+  const moderatorsMap = new Map(moderators.map(u => [u.id, u.username]))
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -217,11 +219,20 @@ export default async function ManageTournamentPage({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {acceptedTeams.map(tt => (
                 <div key={tt.id} className="border rounded-lg p-4">
-                  <h3 className="font-bold">{tt.team.name}</h3>
-                  <p className="text-sm text-gray-600">[{tt.team.tag}]</p>
-                  <p className="text-xs text-gray-500 mt-2">
-                    {tt.team.players.length} joueur(s)
-                  </p>
+                  <div className="flex justify-between items-start">
+                    <div className="flex-1">
+                      <h3 className="font-bold">{tt.team.name}</h3>
+                      <p className="text-sm text-gray-600">[{tt.team.tag}]</p>
+                      <p className="text-xs text-gray-500 mt-2">
+                        {tt.team.players.length} joueur(s)
+                      </p>
+                    </div>
+                    <RemoveTeamButton
+                      tournamentTeamId={tt.id}
+                      teamName={tt.team.name}
+                      tournamentId={params.id}
+                    />
+                  </div>
                 </div>
               ))}
             </div>
@@ -250,9 +261,9 @@ export default async function ManageTournamentPage({
                           <p className="text-sm text-gray-700">{tt.rejectionReason}</p>
                         </div>
                       )}
-                      {tt.rejectedBy && rejectorsMap.get(tt.rejectedBy) && (
+                      {tt.rejectedBy && moderatorsMap.get(tt.rejectedBy) && (
                         <p className="text-xs text-gray-500 mt-2">
-                          Refusé par : <span className="font-medium">{String(rejectorsMap.get(tt.rejectedBy))}</span>
+                          Refusé par : <span className="font-medium">{String(moderatorsMap.get(tt.rejectedBy))}</span>
                         </p>
                       )}
                       <div className="mt-3">
@@ -274,6 +285,61 @@ export default async function ManageTournamentPage({
                     }}>
                       <Button type="submit" variant="outline" className="border-green-300 text-green-600 hover:bg-green-50">
                         ↺ Réexaminer
+                      </Button>
+                    </form>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Équipes retirées */}
+        {removedTeams.length > 0 && (
+          <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 className="text-2xl font-bold mb-6 text-orange-700">
+              Équipes retirées ({removedTeams.length})
+            </h2>
+            <div className="space-y-4">
+              {removedTeams.map((tt: any) => (
+                <div key={tt.id} className="border border-orange-200 rounded-lg p-4 bg-orange-50">
+                  <div className="flex justify-between items-start">
+                    <div className="flex-1">
+                      <h3 className="text-xl font-bold">{tt.team.name}</h3>
+                      <p className="text-gray-600 mb-2">[{tt.team.tag}]</p>
+                      <p className="text-sm text-gray-600 mb-2">
+                        Inscrit le {formatDate(tt.registeredAt)}
+                      </p>
+                      {tt.rejectionReason && (
+                        <div className="mt-3 p-3 bg-white rounded border border-orange-200">
+                          <p className="text-sm font-medium text-orange-700 mb-1">Raison du retrait :</p>
+                          <p className="text-sm text-gray-700">{tt.rejectionReason}</p>
+                        </div>
+                      )}
+                      {tt.rejectedBy && moderatorsMap.get(tt.rejectedBy) && (
+                        <p className="text-xs text-gray-500 mt-2">
+                          Retiré par : <span className="font-medium">{String(moderatorsMap.get(tt.rejectedBy))}</span>
+                        </p>
+                      )}
+                      <div className="mt-3">
+                        <p className="text-sm font-medium mb-1">Joueurs :</p>
+                        <ul className="text-sm text-gray-600">
+                          {tt.team.players.map((player: any) => (
+                            <li key={player.id}>
+                              {player.user.username} {player.role && `(${player.role})`}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                    <form action={async () => {
+                      'use server'
+                      const { validateTeam } = await import('@/lib/actions/staff')
+                      await validateTeam(tt.id, 'ACCEPTED')
+                      revalidatePath(`/staff/tournaments/${params.id}`)
+                    }}>
+                      <Button type="submit" variant="outline" className="border-green-300 text-green-600 hover:bg-green-50">
+                        ↺ Réintégrer
                       </Button>
                     </form>
                   </div>

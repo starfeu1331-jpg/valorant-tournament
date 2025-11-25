@@ -56,6 +56,8 @@ export default async function TournamentDetailPage({
                 ? 'bg-blue-50 border-blue-300'
                 : userTeamRegistration.status === 'WITHDRAW_REQUESTED'
                 ? 'bg-orange-50 border-orange-300'
+                : userTeamRegistration.status === 'REMOVED'
+                ? 'bg-orange-50 border-orange-300'
                 : 'bg-red-50 border-red-300'
             }`}>
               <div className="flex items-start justify-between gap-4">
@@ -63,24 +65,28 @@ export default async function TournamentDetailPage({
                   <span className="text-2xl">
                     {userTeamRegistration.status === 'ACCEPTED' ? '✅' : 
                      userTeamRegistration.status === 'PENDING' ? '⏳' :
-                     userTeamRegistration.status === 'WITHDRAW_REQUESTED' ? '📤' : '❌'}
+                     userTeamRegistration.status === 'WITHDRAW_REQUESTED' ? '📤' :
+                     userTeamRegistration.status === 'REMOVED' ? '⚠️' : '❌'}
                   </span>
                   <div className="flex-1">
                     <h3 className={`font-bold text-lg ${
                       userTeamRegistration.status === 'ACCEPTED' ? 'text-green-800' :
                       userTeamRegistration.status === 'PENDING' ? 'text-blue-800' :
                       userTeamRegistration.status === 'WITHDRAW_REQUESTED' ? 'text-orange-800' :
+                      userTeamRegistration.status === 'REMOVED' ? 'text-orange-800' :
                       'text-red-800'
                     }`}>
                       {userTeamRegistration.status === 'ACCEPTED' && 'Votre équipe est inscrite !'}
                       {userTeamRegistration.status === 'PENDING' && 'Votre équipe est en attente de validation'}
                       {userTeamRegistration.status === 'WITHDRAW_REQUESTED' && 'Demande de retrait en cours'}
+                      {userTeamRegistration.status === 'REMOVED' && 'Votre équipe a été retirée du tournoi'}
                       {userTeamRegistration.status === 'REJECTED' && 'Votre inscription a été refusée'}
                     </h3>
                     <p className={`text-sm mt-1 ${
                       userTeamRegistration.status === 'ACCEPTED' ? 'text-green-700' :
                       userTeamRegistration.status === 'PENDING' ? 'text-blue-700' :
                       userTeamRegistration.status === 'WITHDRAW_REQUESTED' ? 'text-orange-700' :
+                      userTeamRegistration.status === 'REMOVED' ? 'text-orange-700' :
                       'text-red-700'
                     }`}>
                       {userTeamRegistration.status === 'ACCEPTED' && 
@@ -89,7 +95,18 @@ export default async function TournamentDetailPage({
                         `L'équipe ${userTeamRegistration.team.name} [${userTeamRegistration.team.tag}] est en cours de validation par les bénévoles. Vous serez notifié dès que votre inscription sera approuvée.`}
                       {userTeamRegistration.status === 'WITHDRAW_REQUESTED' && 
                         `Votre demande de retrait pour l'équipe ${userTeamRegistration.team.name} est en attente de traitement par le staff.`}
-                      {userTeamRegistration.status === 'REJECTED' && userTeamRegistration.rejectionReason}
+                      {userTeamRegistration.status === 'REMOVED' && (
+                        <>
+                          <span className="font-medium">Raison du retrait :</span>{' '}
+                          {userTeamRegistration.rejectionReason || 'Aucune raison spécifiée. Contactez le staff pour plus d\'informations.'}
+                        </>
+                      )}
+                      {userTeamRegistration.status === 'REJECTED' && (
+                        <>
+                          <span className="font-medium">Raison du refus :</span>{' '}
+                          {userTeamRegistration.rejectionReason || 'Aucune raison spécifiée. Contactez le staff pour plus d\'informations.'}
+                        </>
+                      )}
                     </p>
                   </div>
                 </div>

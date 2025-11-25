@@ -293,3 +293,56 @@ export async function updateMatchScore(
 
   revalidatePath(`/staff/tournaments/${match.tournamentId}`)
 }
+
+export async function removeTeamFromTournament(tournamentTeamId: string, removalReason?: string) {
+  const session = await getServerSession(authOptions)
+
+  if (!session || (session.user.role !== 'STAFF' && session.user.role !== 'ADMIN')) {
+    throw new Error('Non autorisé')
+  }
+
+  const tournamentTeam = await prisma.tournamentTeam.findUnique({
+    where: { id: tournamentTeamId },
+    include: {
+      tournament: true,
+      team: true,
+    },
+  })
+
+  if (!tournamentTeam) {
+    throw new Error('Équipe introuvable')
+  }
+
+  // Marquer l'équipe comme REMOVED au lieu de la supprimer
+  await prisma.tournamentTeam.update({
+    where: { id: tournamentTeamId },
+    data: {
+      status: 'REMOVED',
+      rejectionReason: removalReason || 'Retirée par le staff',
+      rejectedBy: session.user.id,
+    },
+  })
+
+  // Créer une notification pour le propriétaire de l'équipe
+  await createNotification(
+    tournamentTeam.team.ownerId,
+    'TEAM_REJECTED',
+    '⚠️ Équipe retirée du tournoi',
+    `Votre équipe "${tournamentTeam.team.name}" a été retirée du tournoi "${tournamentTeam.tournament.name}". ${removalReason ? `Raison: ${removalReason}` : ''}`,
+    tournamentTeam.tournamentId
+  )
+
+  // Log l'action
+  await prisma.staffActionLog.create({
+    data: {
+      staffId: session.user.id,
+      actionType: 'REMOVE_TEAM',
+      resourceType: 'Team',
+      resourceId: tournamentTeam.teamId,
+      description: `Retrait de l'équipe "${tournamentTeam.team.name}" du tournoi "${tournamentTeam.tournament.name}". ${removalReason ? `Raison: ${removalReason}` : ''}`,
+      tournamentId: tournamentTeam.tournamentId,
+    },
+  })
+
+  revalidatePath(`/staff/tournaments/${tournamentTeam.tournamentId}`)
+}

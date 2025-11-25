@@ -170,9 +170,9 @@ model TournamentTeam {
   id              String                 @id @default(cuid())
   tournamentId    String
   teamId          String
-  status          String                 @default("PENDING") // PENDING, ACCEPTED, REJECTED, WITHDRAW_REQUESTED
+  status          String                 @default("PENDING") // PENDING, ACCEPTED, REJECTED, WITHDRAW_REQUESTED, REMOVED
   rejectionReason String?
-  rejectedBy      String?                // ID du modérateur qui a refusé
+  rejectedBy      String?                // ID du modérateur qui a refusé/retiré
   withdrawReason  String?                // Raison de la demande de retrait
   withdrawRequestedAt DateTime?          // Date de la demande de retrait
   registeredAt    DateTime               @default(now())
