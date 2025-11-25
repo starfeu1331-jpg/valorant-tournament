@@ -3,10 +3,11 @@
 import { signIn } from 'next-auth/react'
 import { Button } from '@/components/ui/button'
 import { useSearchParams } from 'next/navigation'
+import { Suspense } from 'react'
 
 export const dynamic = 'force-dynamic'
 
-export default function SignInPage() {
+function SignInContent() {
   const searchParams = useSearchParams()
   const callbackUrl = searchParams.get('callbackUrl') || '/'
 
@@ -41,5 +42,17 @@ export default function SignInPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function SignInPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">Chargement...</div>
+      </div>
+    }>
+      <SignInContent />
+    </Suspense>
   )
 }

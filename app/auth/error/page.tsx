@@ -3,10 +3,11 @@
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
+import { Suspense } from 'react'
 
 export const dynamic = 'force-dynamic'
 
-export default function AuthErrorPage() {
+function ErrorContent() {
   const searchParams = useSearchParams()
   const error = searchParams.get('error')
 
@@ -59,5 +60,17 @@ export default function AuthErrorPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function AuthErrorPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">Chargement...</div>
+      </div>
+    }>
+      <ErrorContent />
+    </Suspense>
   )
 }
