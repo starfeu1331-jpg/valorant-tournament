@@ -92,6 +92,8 @@ export async function requestWithdraw(tournamentTeamId: string, reason: string) 
     },
   })
 
+  // Pas de notification pour le joueur
+
   revalidatePath(`/teams/${tournamentTeam.teamId}`)
   revalidatePath(`/staff/tournaments/${tournamentTeam.tournamentId}`)
   
@@ -115,9 +117,14 @@ export async function approveWithdraw(tournamentTeamId: string) {
     throw new Error('Inscription introuvable')
   }
 
-  // Supprimer l'inscription
-  await prisma.tournamentTeam.delete({
+  // Marquer l'équipe comme REMOVED au lieu de la supprimer
+  await prisma.tournamentTeam.update({
     where: { id: tournamentTeamId },
+    data: {
+      status: 'REMOVED',
+      rejectionReason: tournamentTeam.withdrawReason || 'Retrait accepté par le staff',
+      rejectedBy: session.user.id,
+    },
   })
 
   // Logger l'action
@@ -131,6 +138,8 @@ export async function approveWithdraw(tournamentTeamId: string) {
       tournamentId: tournamentTeam.tournamentId,
     },
   })
+
+  // Pas de notification pour le joueur
 
   revalidatePath(`/staff/tournaments/${tournamentTeam.tournamentId}`)
   revalidatePath(`/tournaments/${tournamentTeam.tournamentId}`)
@@ -176,6 +185,8 @@ export async function rejectWithdraw(tournamentTeamId: string) {
       tournamentId: tournamentTeam.tournamentId,
     },
   })
+
+  // Pas de notification pour le joueur
 
   revalidatePath(`/staff/tournaments/${tournamentTeam.tournamentId}`)
   revalidatePath(`/teams/${tournamentTeam.teamId}`)
