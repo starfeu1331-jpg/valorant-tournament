@@ -15,6 +15,7 @@ const nextConfig = {
       },
     ],
   },
+  // Force Vercel redeploy
 }
 
 module.exports = nextConfig
