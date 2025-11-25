@@ -1,0 +1,256 @@
+// This is your Prisma schema file
+// Learn more: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ============== AUTH & USERS ==============
+
+model User {
+  id            String    @id @default(cuid())
+  discordId     String?   @unique
+  username      String
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?   // Hash pour auth email/password optionnelle
+  role          String    @default("PLAYER") // PLAYER, STAFF, ADMIN
+  riotId        String?   // Riot ID format: Name#TAG
+  valorantRank  String?   // Rang Valorant (ex: "Gold 3", "Platinum 1")
+  valorantRankUpdated DateTime? // Dernière MAJ du rang
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  accounts      Account[]
+  sessions      Session[]
+  teams         Team[]
+  staffActions  StaffActionLog[]
+  ownedTeams    Team[]        @relation("TeamOwner")
+  teamPlayers   TeamPlayer[]
+  pickBanActions PickBanAction[]
+  sentInvitations     TeamInvitation[] @relation("InvitationSender")
+  receivedInvitations TeamInvitation[] @relation("InvitationReceiver")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ============== TEAMS ==============
+
+model Team {
+  id          String      @id @default(cuid())
+  name        String
+  tag         String      @unique
+  logo        String?
+  game        String
+  description String?
+  ownerId     String
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  // Relations
+  owner               User                 @relation("TeamOwner", fields: [ownerId], references: [id])
+  players             TeamPlayer[]
+  invitations         TeamInvitation[]
+  tournamentTeams     TournamentTeam[]
+  matchesAsTeamA      Match[]              @relation("TeamA")
+  matchesAsTeamB      Match[]              @relation("TeamB")
+  matches             Team[]               @relation("TeamMatches")
+  teamMatches         Team[]               @relation("TeamMatches")
+  users               User[]
+}
+
+model TeamPlayer {
+  id        String   @id @default(cuid())
+  teamId    String
+  userId    String
+  role      String   @default("PLAYER") // CAPTAIN, PLAYER
+  inGameId  String?
+  createdAt DateTime @default(now())
+
+  // Relations
+  team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([teamId, userId])
+}
+
+// Invitations d'équipe
+model TeamInvitation {
+  id          String   @id @default(cuid())
+  teamId      String
+  invitedById String
+  invitedUserId String
+  status      String   @default("PENDING") // PENDING, ACCEPTED, DECLINED
+  createdAt   DateTime @default(now())
+  respondedAt DateTime?
+
+  // Relations
+  team        Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  invitedBy   User @relation("InvitationSender", fields: [invitedById], references: [id], onDelete: Cascade)
+  invitedUser User @relation("InvitationReceiver", fields: [invitedUserId], references: [id], onDelete: Cascade)
+
+  @@unique([teamId, invitedUserId])
+}
+
+// ============== TOURNAMENTS ==============
+
+model Tournament {
+  id                    String            @id @default(cuid())
+  name                  String
+  game                  String
+  description           String?
+  rules                 String?
+  maxTeams              Int
+  format                String            @default("SINGLE_ELIMINATION") // SINGLE_ELIMINATION, DOUBLE_ELIMINATION, ROUND_ROBIN
+  matchFormat           String            @default("BO1") // BO1, BO3, BO5
+  status                String            @default("UPCOMING") // UPCOMING, REGISTRATION_OPEN, ONGOING, COMPLETED
+  registrationOpenAt    DateTime
+  registrationCloseAt   DateTime
+  startDate             DateTime
+  endDate               DateTime?
+  timezone              String            @default("Europe/Paris")
+  pickBanEnabled        Boolean           @default(false)
+  pickBanModel          String?           // JSON string du modèle pick & ban
+  availableElements     String?           // JSON array des éléments (maps, etc.)
+  createdAt             DateTime          @default(now())
+  updatedAt             DateTime          @updatedAt
+
+  // Relations
+  tournamentTeams TournamentTeam[]
+  matches         Match[]
+  staffActions    StaffActionLog[]
+}
+
+model TournamentTeam {
+  id              String                 @id @default(cuid())
+  tournamentId    String
+  teamId          String
+  status          String                 @default("PENDING") // PENDING, ACCEPTED, REJECTED, WITHDRAW_REQUESTED
+  rejectionReason String?
+  withdrawReason  String?                // Raison de la demande de retrait
+  withdrawRequestedAt DateTime?          // Date de la demande de retrait
+  registeredAt    DateTime               @default(now())
+  seed            Int?                   // Position dans le bracket
+
+  // Relations
+  tournament Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  team       Team       @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  @@unique([tournamentId, teamId])
+}
+
+// ============== MATCHES ==============
+
+model Match {
+  id           String      @id @default(cuid())
+  tournamentId String
+  round        String      // "Round 1", "Quarts", "Demies", "Finale"
+  matchNumber  Int
+  teamAId      String?
+  teamBId      String?
+  scheduledAt  DateTime?
+  status       String      @default("SCHEDULED") // SCHEDULED, ONGOING, COMPLETED, CANCELLED
+  scoreTeamA   Int?
+  scoreTeamB   Int?
+  winnerId     String?
+  forfeit      Boolean     @default(false)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  // Relations
+  tournament    Tournament      @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  teamA         Team?           @relation("TeamA", fields: [teamAId], references: [id])
+  teamB         Team?           @relation("TeamB", fields: [teamBId], references: [id])
+  pickBan       PickBan?
+  staffActions  StaffActionLog[]
+}
+
+// ============== PICK & BAN ==============
+
+model PickBan {
+  id        String   @id @default(cuid())
+  matchId   String   @unique
+  sequence  String   // JSON array de la séquence
+  completed Boolean  @default(false)
+  result    String?  // JSON du résultat final
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  match   Match           @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  actions PickBanAction[]
+}
+
+model PickBanAction {
+  id         String         @id @default(cuid())
+  pickBanId  String
+  stepNumber Int
+  teamId     String?
+  action     String         // BAN, PICK
+  element    String         // Ex: "Ascent", "Bind"
+  performedBy String?       // userId ou "staff"
+  performedAt DateTime       @default(now())
+
+  // Relations
+  pickBan PickBan @relation(fields: [pickBanId], references: [id], onDelete: Cascade)
+  user    User?   @relation(fields: [performedBy], references: [id])
+}
+
+// ============== STAFF ACTIONS LOG ==============
+
+model StaffActionLog {
+  id           String   @id @default(cuid())
+  staffId      String
+  actionType   String   // "CREATE_TOURNAMENT", "VALIDATE_TEAM", "UPDATE_MATCH", etc.
+  resourceType String   // "Tournament", "Match", "Team"
+  resourceId   String?
+  description  String
+  tournamentId String?
+  matchId      String?
+  createdAt    DateTime @default(now())
+
+  // Relations
+  staff      User        @relation(fields: [staffId], references: [id])
+  tournament Tournament? @relation(fields: [tournamentId], references: [id])
+  match      Match?      @relation(fields: [matchId], references: [id])
+}
