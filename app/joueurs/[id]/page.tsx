@@ -82,16 +82,23 @@ export default async function PublicPlayerDetailPage({
                 </div>
               </div>
               <div className="flex gap-2">
+                {isStaff && (
+                  <>
+                    <Link href={`/messages/${user.id}`}>
+                      <Button className="bg-primary-600 hover:bg-primary-700">
+                        💬 Contacter
+                      </Button>
+                    </Link>
+                    <Link href={`/staff/joueurs/${user.id}`}>
+                      <Button variant="outline" className="bg-yellow-50 border-yellow-300 text-yellow-700 hover:bg-yellow-100">
+                        ⚙️ Gérer
+                      </Button>
+                    </Link>
+                  </>
+                )}
                 <Link href="/joueurs">
                   <Button variant="outline">Retour</Button>
                 </Link>
-                {isStaff && (
-                  <Link href={`/staff/joueurs/${user.id}`}>
-                    <Button variant="outline" className="bg-yellow-50 border-yellow-300 text-yellow-700 hover:bg-yellow-100">
-                      ⚙️ Gérer
-                    </Button>
-                  </Link>
-                )}
               </div>
             </div>
           </div>

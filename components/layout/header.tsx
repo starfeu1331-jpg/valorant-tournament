@@ -2,14 +2,15 @@
 
 import Link from 'next/link'
 import { useSession, signOut } from 'next-auth/react'
-import Image from 'next/image'
+import { NotificationsBadge } from './notifications-badge'
+import { MessagesBadge } from './messages-badge'
 
 export function Header() {
   const { data: session, status } = useSession()
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
-      <div className="container flex h-16 items-center justify-between px-4">
+      <div className="w-full max-w-screen-2xl mx-auto flex h-16 items-center justify-between px-4">
         {/* Logo et navigation */}
         <div className="flex items-center gap-6">
           <Link href="/" className="flex items-center space-x-2">
@@ -58,6 +59,12 @@ export function Header() {
                 >
                   Invitations
                 </Link>
+                <Link
+                  href="/contact-staff"
+                  className="text-sm font-medium text-gray-700 hover:text-primary-600 transition-colors"
+                >
+                  📞 Support
+                </Link>
               </>
             ) : null}
             {session?.user?.role === 'STAFF' || session?.user?.role === 'ADMIN' ? (
@@ -77,32 +84,38 @@ export function Header() {
             <div className="h-8 w-24 animate-pulse rounded bg-gray-200" />
           ) : session?.user ? (
             <div className="flex items-center gap-3">
-              {/* Avatar et nom */}
-              <Link href="/profile" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-                {session.user.image ? (
-                  <Image
-                    src={session.user.image}
-                    alt={session.user.name || 'User'}
-                    width={32}
-                    height={32}
-                    className="rounded-full ring-2 ring-primary-100"
+              {/* Icône Messages */}
+              <Link href="/messages" className="relative">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-6 h-6 text-gray-700 hover:text-primary-600 transition-colors cursor-pointer"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
                   />
-                ) : (
-                  <div className="h-8 w-8 rounded-full bg-gradient-to-r from-primary-500 to-primary-600 flex items-center justify-center text-white text-sm font-bold">
-                    {session.user.name?.charAt(0).toUpperCase() || 'U'}
-                  </div>
-                )}
-                <div className="hidden sm:block">
-                  <p className="text-sm font-medium text-gray-900">
-                    {session.user.name}
-                  </p>
-                  <p className="text-xs text-gray-500">
-                    {session.user.role === 'ADMIN' ? '👑 Admin' : 
-                     session.user.role === 'STAFF' ? '⭐ Staff' : 
-                     '🎮 Joueur'}
-                  </p>
-                </div>
+                </svg>
+                <MessagesBadge />
               </Link>
+
+              {/* Avatar avec dropdown notifications */}
+              <NotificationsBadge session={session} />
+
+              <div className="hidden sm:flex sm:flex-col sm:justify-center">
+                <p className="text-sm font-medium text-gray-900 leading-tight">
+                  {session.user.name}
+                </p>
+                <p className="text-xs text-gray-500 leading-tight">
+                  {session.user.role === 'ADMIN' ? '👑 Admin' : 
+                   session.user.role === 'STAFF' ? '⭐ Staff' : 
+                   '🎮 Joueur'}
+                </p>
+              </div>
 
               {/* Bouton déconnexion */}
               <button

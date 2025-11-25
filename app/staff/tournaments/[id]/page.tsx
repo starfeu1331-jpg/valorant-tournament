@@ -62,6 +62,18 @@ export default async function ManageTournamentPage({
   const rejectedTeams = tournament.tournamentTeams.filter(tt => tt.status === 'REJECTED')
   const withdrawRequests = tournament.tournamentTeams.filter(tt => tt.status === 'WITHDRAW_REQUESTED')
 
+  // Récupérer les modérateurs qui ont refusé des équipes
+  const rejectorIds = rejectedTeams
+    .map(tt => tt.rejectedBy)
+    .filter((id): id is string => id !== null)
+  
+  const rejectors = await prisma.user.findMany({
+    where: { id: { in: rejectorIds } },
+    select: { id: true, username: true }
+  })
+
+  const rejectorsMap = new Map(rejectors.map(u => [u.id, u.username]))
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -215,6 +227,61 @@ export default async function ManageTournamentPage({
             </div>
           )}
         </div>
+
+        {/* Équipes refusées */}
+        {rejectedTeams.length > 0 && (
+          <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 className="text-2xl font-bold mb-6 text-red-700">
+              Équipes refusées ({rejectedTeams.length})
+            </h2>
+            <div className="space-y-4">
+              {rejectedTeams.map((tt: any) => (
+                <div key={tt.id} className="border border-red-200 rounded-lg p-4 bg-red-50">
+                  <div className="flex justify-between items-start">
+                    <div className="flex-1">
+                      <h3 className="text-xl font-bold">{tt.team.name}</h3>
+                      <p className="text-gray-600 mb-2">[{tt.team.tag}]</p>
+                      <p className="text-sm text-gray-600 mb-2">
+                        Inscrit le {formatDate(tt.registeredAt)}
+                      </p>
+                      {tt.rejectionReason && (
+                        <div className="mt-3 p-3 bg-white rounded border border-red-200">
+                          <p className="text-sm font-medium text-red-700 mb-1">Raison du refus :</p>
+                          <p className="text-sm text-gray-700">{tt.rejectionReason}</p>
+                        </div>
+                      )}
+                      {tt.rejectedBy && rejectorsMap.get(tt.rejectedBy) && (
+                        <p className="text-xs text-gray-500 mt-2">
+                          Refusé par : <span className="font-medium">{String(rejectorsMap.get(tt.rejectedBy))}</span>
+                        </p>
+                      )}
+                      <div className="mt-3">
+                        <p className="text-sm font-medium mb-1">Joueurs :</p>
+                        <ul className="text-sm text-gray-600">
+                          {tt.team.players.map((player: any) => (
+                            <li key={player.id}>
+                              {player.user.username} {player.role && `(${player.role})`}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                    <form action={async () => {
+                      'use server'
+                      const { validateTeam } = await import('@/lib/actions/staff')
+                      await validateTeam(tt.id, 'ACCEPTED')
+                      revalidatePath(`/staff/tournaments/${params.id}`)
+                    }}>
+                      <Button type="submit" variant="outline" className="border-green-300 text-green-600 hover:bg-green-50">
+                        ↺ Réexaminer
+                      </Button>
+                    </form>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Bracket et matches */}
         {tournament.matches.length > 0 && (

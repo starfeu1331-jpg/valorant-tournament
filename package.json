@@ -13,7 +13,8 @@
     "db:seed": "tsx scripts/seed.ts",
     "create:admin": "tsx scripts/create-admin.ts",
     "check:tournaments": "tsx scripts/check-tournaments.ts",
-    "open:tournament": "tsx scripts/open-tournament.ts"
+    "open:tournament": "tsx scripts/open-tournament.ts",
+    "test:notifications": "tsx scripts/create-test-notifications.ts"
   },
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.7",

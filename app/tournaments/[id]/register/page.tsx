@@ -34,7 +34,7 @@ export default async function RegisterTeamPage({
   const eligibleTeams = myTeams.filter((team: any) => team.game === tournament.game)
 
   // Vérifier les équipes déjà inscrites
-  const registeredTeamIds = await prisma.tournamentTeam.findMany({
+  const registeredTeams = await prisma.tournamentTeam.findMany({
     where: {
       tournamentId: params.id,
       teamId: {
@@ -43,10 +43,17 @@ export default async function RegisterTeamPage({
     },
     select: {
       teamId: true,
+      status: true,
     },
   })
 
-  const registeredIds = new Set(registeredTeamIds.map((rt: any) => rt.teamId))
+  const registeredByStatus = {
+    pending: registeredTeams.filter((rt: any) => rt.status === 'PENDING'),
+    rejected: registeredTeams.filter((rt: any) => rt.status === 'REJECTED'),
+    accepted: registeredTeams.filter((rt: any) => rt.status === 'ACCEPTED'),
+  }
+
+  const registeredIds = new Set(registeredTeams.map((rt: any) => rt.teamId))
   const availableTeams = eligibleTeams.filter((team: any) => !registeredIds.has(team.id))
 
   async function handleRegister(formData: FormData) {
@@ -89,13 +96,42 @@ export default async function RegisterTeamPage({
             </div>
           ) : availableTeams.length === 0 ? (
             <div className="bg-white rounded-lg shadow p-8 text-center">
-              <div className="text-6xl mb-4">✅</div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                Toutes vos équipes sont déjà inscrites
-              </h2>
-              <p className="text-gray-600 mb-6">
-                Vous avez déjà inscrit toutes vos équipes {tournament.game} à ce tournoi
-              </p>
+              {registeredByStatus.pending.length > 0 ? (
+                <>
+                  <div className="text-6xl mb-4">⏳</div>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                    Inscription en attente de validation
+                  </h2>
+                  <p className="text-gray-600 mb-6">
+                    Votre équipe est en cours de validation par les bénévoles. Vous serez notifié dès que votre inscription sera approuvée.
+                  </p>
+                </>
+              ) : registeredByStatus.rejected.length > 0 ? (
+                <>
+                  <div className="text-6xl mb-4">❌</div>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                    Inscription refusée
+                  </h2>
+                  <p className="text-gray-600 mb-4">
+                    Votre inscription a été refusée par le staff.
+                  </p>
+                  <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-6">
+                    <p className="text-sm text-orange-900">
+                      <strong>💬 Besoin d'aide ?</strong> Contactez le staff Discord pour demander une seconde chance ou obtenir plus d'informations.
+                    </p>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="text-6xl mb-4">✅</div>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                    Toutes vos équipes sont déjà inscrites
+                  </h2>
+                  <p className="text-gray-600 mb-6">
+                    Vous avez déjà inscrit toutes vos équipes {tournament.game} à ce tournoi
+                  </p>
+                </>
+              )}
               <Link href={`/tournaments/${params.id}`}>
                 <Button size="lg">
                   Retour au tournoi

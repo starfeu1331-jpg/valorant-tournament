@@ -5,14 +5,17 @@ import { prisma } from '@/lib/prisma'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
+import { Alert } from '@/components/ui/alert'
 import { cancelRegistration, requestWithdraw } from '@/lib/actions/tournament-registration'
 import { invitePlayerToTeam } from '@/lib/actions/invitations'
 import { revalidatePath } from 'next/cache'
 
 export default async function TeamDetailPage({
   params,
+  searchParams,
 }: {
   params: { id: string }
+  searchParams: { error?: string; success?: string }
 }) {
   const session = await getServerSession(authOptions)
 
@@ -57,8 +60,12 @@ export default async function TeamDetailPage({
   async function handleInvite(formData: FormData) {
     'use server'
     const username = formData.get('username') as string
-    await invitePlayerToTeam(params.id, username)
-    revalidatePath(`/teams/${params.id}`)
+    try {
+      await invitePlayerToTeam(params.id, username)
+      redirect(`/teams/${params.id}?success=Invitation envoyée avec succès`)
+    } catch (error: any) {
+      redirect(`/teams/${params.id}?error=${encodeURIComponent(error.message)}`)
+    }
   }
 
   async function handleCancelRegistration(formData: FormData) {
@@ -83,6 +90,14 @@ export default async function TeamDetailPage({
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
+          {/* Messages d'erreur / succès */}
+          {searchParams.error && (
+            <Alert type="error" message={searchParams.error} teamId={params.id} />
+          )}
+          {searchParams.success && (
+            <Alert type="success" message={searchParams.success} teamId={params.id} />
+          )}
+
           {/* En-tête */}
           <div className="bg-white rounded-lg shadow p-6 mb-6">
             <div className="flex items-start justify-between">

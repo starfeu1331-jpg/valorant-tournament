@@ -108,6 +108,11 @@ export default async function StaffPlayerManagePage({
                 <p className="text-gray-600">{user.username}</p>
               </div>
               <div className="flex gap-2">
+                <Link href={`/messages/${user.id}`}>
+                  <Button className="bg-primary-600 hover:bg-primary-700">
+                    💬 Contacter
+                  </Button>
+                </Link>
                 <Link href={`/joueurs/${user.id}`}>
                   <Button variant="outline">Voir public</Button>
                 </Link>

@@ -21,6 +21,15 @@ export default async function TournamentDetailPage({
   const acceptedTeams = tournament.tournamentTeams.filter(tt => tt.status === 'ACCEPTED')
   const canRegister = tournament.status === 'REGISTRATION_OPEN' && session
 
+  // Vérifier si l'utilisateur a une équipe inscrite à ce tournoi
+  let userTeamRegistration = null
+  if (session) {
+    userTeamRegistration = tournament.tournamentTeams.find(tt => 
+      tt.team.ownerId === session.user.id || 
+      tt.team.players.some(p => p.userId === session.user.id)
+    )
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 py-12">
       <div className="container mx-auto px-4">
@@ -31,12 +40,67 @@ export default async function TournamentDetailPage({
               <h1 className="text-4xl font-bold mb-2">{tournament.name}</h1>
               <p className="text-gray-600 text-lg">{tournament.game}</p>
             </div>
-            {canRegister && (
+            {canRegister && !userTeamRegistration && (
               <Link href={`/tournaments/${tournament.id}/register`}>
                 <Button size="lg">Inscrire mon équipe</Button>
               </Link>
             )}
           </div>
+
+          {/* Statut de l'inscription de l'utilisateur */}
+          {userTeamRegistration && (
+            <div className={`mt-6 p-4 rounded-lg border-2 ${
+              userTeamRegistration.status === 'ACCEPTED' 
+                ? 'bg-green-50 border-green-300'
+                : userTeamRegistration.status === 'PENDING'
+                ? 'bg-blue-50 border-blue-300'
+                : userTeamRegistration.status === 'WITHDRAW_REQUESTED'
+                ? 'bg-orange-50 border-orange-300'
+                : 'bg-red-50 border-red-300'
+            }`}>
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex items-start gap-3 flex-1">
+                  <span className="text-2xl">
+                    {userTeamRegistration.status === 'ACCEPTED' ? '✅' : 
+                     userTeamRegistration.status === 'PENDING' ? '⏳' :
+                     userTeamRegistration.status === 'WITHDRAW_REQUESTED' ? '📤' : '❌'}
+                  </span>
+                  <div className="flex-1">
+                    <h3 className={`font-bold text-lg ${
+                      userTeamRegistration.status === 'ACCEPTED' ? 'text-green-800' :
+                      userTeamRegistration.status === 'PENDING' ? 'text-blue-800' :
+                      userTeamRegistration.status === 'WITHDRAW_REQUESTED' ? 'text-orange-800' :
+                      'text-red-800'
+                    }`}>
+                      {userTeamRegistration.status === 'ACCEPTED' && 'Votre équipe est inscrite !'}
+                      {userTeamRegistration.status === 'PENDING' && 'Votre équipe est en attente de validation'}
+                      {userTeamRegistration.status === 'WITHDRAW_REQUESTED' && 'Demande de retrait en cours'}
+                      {userTeamRegistration.status === 'REJECTED' && 'Votre inscription a été refusée'}
+                    </h3>
+                    <p className={`text-sm mt-1 ${
+                      userTeamRegistration.status === 'ACCEPTED' ? 'text-green-700' :
+                      userTeamRegistration.status === 'PENDING' ? 'text-blue-700' :
+                      userTeamRegistration.status === 'WITHDRAW_REQUESTED' ? 'text-orange-700' :
+                      'text-red-700'
+                    }`}>
+                      {userTeamRegistration.status === 'ACCEPTED' && 
+                        `L'équipe ${userTeamRegistration.team.name} [${userTeamRegistration.team.tag}] participe au tournoi`}
+                      {userTeamRegistration.status === 'PENDING' && 
+                        `L'équipe ${userTeamRegistration.team.name} [${userTeamRegistration.team.tag}] est en cours de validation par les bénévoles. Vous serez notifié dès que votre inscription sera approuvée.`}
+                      {userTeamRegistration.status === 'WITHDRAW_REQUESTED' && 
+                        `Votre demande de retrait pour l'équipe ${userTeamRegistration.team.name} est en attente de traitement par le staff.`}
+                      {userTeamRegistration.status === 'REJECTED' && userTeamRegistration.rejectionReason}
+                    </p>
+                  </div>
+                </div>
+                <Link href={`/teams/${userTeamRegistration.team.id}`}>
+                  <Button variant="outline">
+                    Voir mon équipe
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          )}
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
             <div>

@@ -35,18 +35,18 @@ export async function invitePlayerToTeam(teamId: string, username: string) {
     throw new Error('Vous n\'avez pas les permissions pour inviter des joueurs')
   }
 
-  // Trouver l'utilisateur à inviter
+  // Trouver l'utilisateur à inviter (recherche insensible à la casse)
   const invitedUser = await prisma.user.findFirst({
     where: {
       username: {
         equals: username,
-        mode: 'insensitive',
+        ...(process.env.DATABASE_URL?.includes('postgresql') && { mode: 'insensitive' as const }),
       },
     },
   })
 
   if (!invitedUser) {
-    throw new Error('Joueur non trouvé')
+    throw new Error('Joueur non trouvé. Le joueur doit d\'abord créer un compte sur la plateforme en se connectant avec Discord.')
   }
 
   // Vérifier qu'il n'est pas déjà dans l'équipe

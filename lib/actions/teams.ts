@@ -5,6 +5,7 @@ import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
+import { createNotification } from './notifications'
 
 export async function createTeam(formData: FormData) {
   const session = await getServerSession(authOptions)
@@ -147,6 +148,15 @@ export async function registerTeamToTournament(tournamentId: string, teamId: str
       status: 'PENDING',
     },
   })
+
+  // Créer une notification pour le propriétaire de l'équipe
+  await createNotification(
+    session.user.id,
+    'REGISTRATION_SUBMITTED',
+    '📝 Inscription en attente',
+    `Votre équipe "${team.name}" a été inscrite au tournoi "${tournament.name}". Elle est maintenant en attente de validation par le staff.`,
+    tournamentId
+  )
 
   revalidatePath(`/tournaments/${tournamentId}`)
   return { success: true }

@@ -5,6 +5,7 @@ import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
+import { createNotification } from './notifications'
 
 export async function createTournament(formData: FormData) {
   const session = await getServerSession(authOptions)
@@ -96,12 +97,41 @@ export async function validateTeam(tournamentTeamId: string, status: 'ACCEPTED' 
     data: {
       status,
       rejectionReason: status === 'REJECTED' ? rejectionReason : null,
+      rejectedBy: status === 'REJECTED' ? session.user.id : null,
     },
     include: {
       tournament: true,
-      team: true,
+      team: {
+        include: {
+          owner: true,
+          players: {
+            include: {
+              user: true,
+            },
+          },
+        },
+      },
     },
   })
+
+  // Créer une notification pour le propriétaire de l'équipe
+  if (status === 'ACCEPTED') {
+    await createNotification(
+      tournamentTeam.team.ownerId,
+      'TEAM_VALIDATED',
+      '✅ Équipe acceptée !',
+      `Votre équipe "${tournamentTeam.team.name}" a été acceptée pour le tournoi "${tournamentTeam.tournament.name}"`,
+      tournamentTeam.tournamentId
+    )
+  } else if (status === 'REJECTED') {
+    await createNotification(
+      tournamentTeam.team.ownerId,
+      'TEAM_REJECTED',
+      '❌ Équipe refusée',
+      `Votre équipe "${tournamentTeam.team.name}" a été refusée pour le tournoi "${tournamentTeam.tournament.name}". ${rejectionReason ? `Raison: ${rejectionReason}` : 'Contactez le staff Discord pour plus d\'informations.'}`,
+      tournamentTeam.tournamentId
+    )
+  }
 
   await prisma.staffActionLog.create({
     data: {

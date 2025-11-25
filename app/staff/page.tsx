@@ -32,6 +32,12 @@ export default async function StaffDashboard() {
     },
   })
 
+  const openStaffConversations = await prisma.staffConversation.count({
+    where: {
+      status: 'OPEN',
+    },
+  })
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -78,6 +84,25 @@ export default async function StaffDashboard() {
             </p>
           </div>
         </div>
+
+        {/* Messages des joueurs */}
+        {openStaffConversations > 0 && (
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
+            <div className="flex justify-between items-center">
+              <div>
+                <h3 className="text-lg font-bold text-blue-900 mb-1">
+                  💬 Messages des joueurs
+                </h3>
+                <p className="text-blue-700">
+                  {openStaffConversations} conversation{openStaffConversations > 1 ? 's' : ''} en attente de réponse
+                </p>
+              </div>
+              <Link href="/staff/messages">
+                <Button>Voir les messages</Button>
+              </Link>
+            </div>
+          </div>
+        )}
 
         {/* Liste des tournois */}
         <div className="bg-white rounded-lg shadow">
