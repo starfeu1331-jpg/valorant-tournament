@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -20,7 +20,7 @@ model User {
   emailVerified DateTime?
   image         String?
   password      String?   // Hash pour auth email/password optionnelle
-  role          String    @default("PLAYER") // PLAYER, STAFF, ADMIN
+  role          String    @default("PLAYER") // PLAYER, STAFF, ADMIN, REGIE
   riotId        String?   // Riot ID format: Name#TAG
   valorantRank  String?   // Rang Valorant (ex: "Gold 3", "Platinum 1")
   valorantRankUpdated DateTime? // Dernière MAJ du rang
@@ -320,4 +320,18 @@ model StaffMessage {
   // Relations
   conversation StaffConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
   sender       User              @relation(fields: [senderId], references: [id], onDelete: Cascade)
+}
+
+// ============== OVERLAYS SYSTEM ==============
+
+model Overlay {
+  id          String   @id @default(cuid())
+  name        String   // "Match en cours", "Bracket", "Top Joueurs"
+  slug        String   @unique // "live-match", "bracket-view", "top-players"
+  type        String   // "SCOREBOARD", "BRACKET", "PLAYERS", "TOURNAMENT_INFO", "CUSTOM"
+  description String?
+  isActive    Boolean  @default(false) // Visible ou non
+  config      String?  // JSON config (couleurs, layout, etc.)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

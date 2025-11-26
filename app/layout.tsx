@@ -1,24 +1,23 @@
 import type { Metadata } from 'next'
 import { Inter, Poppins } from 'next/font/google'
 import './globals.css'
-import { AuthProvider } from '@/components/providers/auth-provider'
-import { Toaster } from '@/components/ui/toaster'
-import { Header } from '@/components/layout/header'
 
 const inter = Inter({ 
   subsets: ['latin'],
   variable: '--font-inter',
+  display: 'swap',
 })
 
-const poppins = Poppins({ 
-  weight: ['600', '700', '800', '900'],
+const poppins = Poppins({
+  weight: ['400', '500', '600', '700'],
   subsets: ['latin'],
   variable: '--font-poppins',
+  display: 'swap',
 })
 
 export const metadata: Metadata = {
-  title: 'EVY Tournament - Plateforme E-Sport',
-  description: 'Plateforme officielle de gestion de tournois e-sport EVY pour Valorant et autres jeux compétitifs',
+  title: 'EVY E-Sport',
+  description: 'Plateforme de gestion de tournois e-sport',
 }
 
 export default function RootLayout({
@@ -29,22 +28,7 @@ export default function RootLayout({
   return (
     <html lang="fr" className="light">
       <body className={`${inter.variable} ${poppins.variable} font-sans`}>
-        <AuthProvider>
-          <Header />
-          <main className="min-h-screen pt-20 md:pt-28 relative">
-            {/* Background image globale pour toutes les pages */}
-            <div className="fixed inset-0 -z-10">
-              <img 
-                src="/images/backgrounds/evy-fond.jpg"
-                alt="Background"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/60 to-black/70" />
-            </div>
-            {children}
-          </main>
-          <Toaster />
-        </AuthProvider>
+        {children}
       </body>
     </html>
   )

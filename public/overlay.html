@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1920, initial-scale=1.0">
+  <title>Live Overlay</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      background: transparent !important;
+      overflow: hidden;
+      width: 1920px;
+      height: 1080px;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+    
+    #overlay {
+      width: 100%;
+      height: 100%;
+      padding: 40px;
+    }
+    
+    .tournament-header {
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.95), rgba(59, 130, 246, 0.95));
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      backdrop-filter: blur(10px);
+    }
+    
+    .tournament-header h1 {
+      color: white;
+      font-size: 48px;
+      font-weight: bold;
+      margin: 0;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+    
+    .tournament-header p {
+      color: rgba(255,255,255,0.9);
+      font-size: 20px;
+      margin: 8px 0 0 0;
+    }
+    
+    .match-container {
+      background: linear-gradient(135deg, rgba(17, 24, 39, 0.95), rgba(31, 41, 55, 0.95));
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      backdrop-filter: blur(10px);
+    }
+    
+    .match-label {
+      text-align: center;
+      margin-bottom: 24px;
+      color: rgba(255,255,255,0.7);
+      font-size: 18px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    
+    .teams-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      gap: 32px;
+    }
+    
+    .team {
+      flex: 1;
+      text-align: center;
+      border-radius: 12px;
+      padding: 24px;
+    }
+    
+    .team-a {
+      background: rgba(59, 130, 246, 0.2);
+      border: 2px solid rgba(59, 130, 246, 0.5);
+    }
+    
+    .team-b {
+      background: rgba(239, 68, 68, 0.2);
+      border: 2px solid rgba(239, 68, 68, 0.5);
+    }
+    
+    .team-name {
+      font-size: 32px;
+      font-weight: bold;
+      color: white;
+      margin-bottom: 12px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+    
+    .team-score {
+      font-size: 64px;
+      font-weight: bold;
+      text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+    }
+    
+    .team-a .team-score {
+      color: #3b82f6;
+    }
+    
+    .team-b .team-score {
+      color: #ef4444;
+    }
+    
+    .vs {
+      font-size: 36px;
+      font-weight: bold;
+      color: rgba(255,255,255,0.5);
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+    
+    .match-round {
+      text-align: center;
+      margin-top: 24px;
+      color: rgba(255,255,255,0.7);
+      font-size: 18px;
+      font-weight: 600;
+    }
+    
+    .no-data {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.7);
+      font-size: 24px;
+    }
+  </style>
+</head>
+<body>
+  <div id="overlay"></div>
+
+  <script>
+    let currentTournamentId = null;
+
+    async function fetchActiveTournament() {
+      try {
+        const response = await fetch('/api/overlay/tournaments/active');
+        if (!response.ok) return null;
+        return await response.json();
+      } catch (error) {
+        console.error('Error fetching tournament:', error);
+        return null;
+      }
+    }
+
+    async function fetchTournamentData(tournamentId) {
+      try {
+        const response = await fetch(`/api/overlay/tournament/${tournamentId}`);
+        if (!response.ok) return null;
+        return await response.json();
+      } catch (error) {
+        console.error('Error fetching tournament data:', error);
+        return null;
+      }
+    }
+
+    function renderOverlay(tournament) {
+      const overlay = document.getElementById('overlay');
+      
+      if (!tournament) {
+        overlay.innerHTML = '<div class="no-data">Aucun tournoi en cours</div>';
+        return;
+      }
+
+      // Trouve le match à afficher (en cours > prochain > dernier)
+      const currentMatch = tournament.matches?.find(m => m.status === 'IN_PROGRESS')
+        || tournament.matches?.find(m => m.status === 'PENDING')
+        || tournament.matches?.[0];
+
+      let html = `
+        <div class="tournament-header">
+          <h1>${tournament.name}</h1>
+          <p>${tournament.game} • ${tournament.tournamentTeams?.length || 0} équipes</p>
+        </div>
+      `;
+
+      if (currentMatch) {
+        html += `
+          <div class="match-container">
+            <div class="match-label">MATCH EN COURS</div>
+            <div class="teams-container">
+              <div class="team team-a">
+                <div class="team-name">${currentMatch.teamA?.name || 'Équipe A'}</div>
+                <div class="team-score">${currentMatch.scoreA || 0}</div>
+              </div>
+              <div class="vs">VS</div>
+              <div class="team team-b">
+                <div class="team-name">${currentMatch.teamB?.name || 'Équipe B'}</div>
+                <div class="team-score">${currentMatch.scoreB || 0}</div>
+              </div>
+            </div>
+            ${currentMatch.round ? `<div class="match-round">${currentMatch.round}</div>` : ''}
+          </div>
+        `;
+      }
+
+      overlay.innerHTML = html;
+    }
+
+    async function updateOverlay() {
+      // Récupère le tournoi actif
+      const activeTournament = await fetchActiveTournament();
+      
+      if (!activeTournament) {
+        renderOverlay(null);
+        return;
+      }
+
+      // Si nouveau tournoi, met à jour l'ID
+      if (currentTournamentId !== activeTournament.id) {
+        currentTournamentId = activeTournament.id;
+      }
+
+      // Récupère les données détaillées
+      const tournamentData = await fetchTournamentData(currentTournamentId);
+      renderOverlay(tournamentData);
+    }
+
+    // Mise à jour initiale
+    updateOverlay();
+
+    // Rafraîchit toutes les 5 secondes
+    setInterval(updateOverlay, 5000);
+  </script>
+</body>
+</html>
