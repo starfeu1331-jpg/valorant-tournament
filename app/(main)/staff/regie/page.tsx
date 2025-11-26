@@ -49,7 +49,19 @@ export default function RegieDashboardPage() {
     setLoading(true);
     const res = await fetch("/api/overlay/list");
     if (res.ok) {
-      setOverlays(await res.json());
+      const data = await res.json();
+      // Robust: accept array or {overlays: array}
+      if (Array.isArray(data)) {
+        setOverlays(data);
+      } else if (Array.isArray(data.overlays)) {
+        setOverlays(data.overlays);
+      } else {
+        setFeedback("Erreur: format inattendu de la réponse API overlays");
+        setOverlays([]);
+      }
+    } else {
+      setFeedback("Erreur lors de la récupération des overlays");
+      setOverlays([]);
     }
     setLoading(false);
   };
