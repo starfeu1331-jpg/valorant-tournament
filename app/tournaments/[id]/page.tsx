@@ -31,34 +31,40 @@ export default async function TournamentDetailPage({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="container mx-auto px-4">
+    <div className="min-h-screen py-12">
+      {/* Bulles décoratives */}
+      <div className="fixed top-20 right-20 w-96 h-96 bg-blue-500/10 rounded-full filter blur-3xl pointer-events-none animate-float" />
+      <div className="fixed bottom-20 left-20 w-96 h-96 bg-purple-500/10 rounded-full filter blur-3xl pointer-events-none animate-float" style={{animationDelay: '2s'}} />
+      
+      <div className="container mx-auto px-4 relative z-10">
         {/* En-tête */}
-        <div className="bg-white rounded-lg shadow-md p-8 mb-8">
+        <div className="glass-card rounded-4xl p-8 mb-8 border border-white/20">
           <div className="flex justify-between items-start">
             <div>
-              <h1 className="text-4xl font-bold mb-2">{tournament.name}</h1>
-              <p className="text-gray-600 text-lg">{tournament.game}</p>
+              <h1 className="text-4xl font-display font-black text-white mb-2">{tournament.name}</h1>
+              <p className="text-white/70 text-lg">{tournament.game}</p>
             </div>
             {canRegister && !userTeamRegistration && (
               <Link href={`/tournaments/${tournament.id}/register`}>
-                <Button size="lg">Inscrire mon équipe</Button>
+                <Button size="lg" className="bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700">
+                  Inscrire mon équipe
+                </Button>
               </Link>
             )}
           </div>
 
           {/* Statut de l'inscription de l'utilisateur */}
           {userTeamRegistration && (
-            <div className={`mt-6 p-4 rounded-lg border-2 ${
+            <div className={`mt-6 p-4 rounded-2xl border-2 backdrop-blur-sm ${
               userTeamRegistration.status === 'ACCEPTED' 
-                ? 'bg-green-50 border-green-300'
+                ? 'bg-green-500/10 border-green-500/30'
                 : userTeamRegistration.status === 'PENDING'
-                ? 'bg-blue-50 border-blue-300'
+                ? 'bg-blue-500/10 border-blue-500/30'
                 : userTeamRegistration.status === 'WITHDRAW_REQUESTED'
-                ? 'bg-orange-50 border-orange-300'
+                ? 'bg-orange-500/10 border-orange-500/30'
                 : userTeamRegistration.status === 'REMOVED'
-                ? 'bg-orange-50 border-orange-300'
-                : 'bg-red-50 border-red-300'
+                ? 'bg-orange-500/10 border-orange-500/30'
+                : 'bg-red-500/10 border-red-500/30'
             }`}>
               <div className="flex items-start justify-between gap-4">
                 <div className="flex items-start gap-3 flex-1">
@@ -70,11 +76,11 @@ export default async function TournamentDetailPage({
                   </span>
                   <div className="flex-1">
                     <h3 className={`font-bold text-lg ${
-                      userTeamRegistration.status === 'ACCEPTED' ? 'text-green-800' :
-                      userTeamRegistration.status === 'PENDING' ? 'text-blue-800' :
-                      userTeamRegistration.status === 'WITHDRAW_REQUESTED' ? 'text-orange-800' :
-                      userTeamRegistration.status === 'REMOVED' ? 'text-orange-800' :
-                      'text-red-800'
+                      userTeamRegistration.status === 'ACCEPTED' ? 'text-green-400' :
+                      userTeamRegistration.status === 'PENDING' ? 'text-blue-400' :
+                      userTeamRegistration.status === 'WITHDRAW_REQUESTED' ? 'text-orange-400' :
+                      userTeamRegistration.status === 'REMOVED' ? 'text-orange-400' :
+                      'text-red-400'
                     }`}>
                       {userTeamRegistration.status === 'ACCEPTED' && 'Votre équipe est inscrite !'}
                       {userTeamRegistration.status === 'PENDING' && 'Votre équipe est en attente de validation'}
@@ -82,13 +88,7 @@ export default async function TournamentDetailPage({
                       {userTeamRegistration.status === 'REMOVED' && 'Votre équipe a été retirée du tournoi'}
                       {userTeamRegistration.status === 'REJECTED' && 'Votre inscription a été refusée'}
                     </h3>
-                    <p className={`text-sm mt-1 ${
-                      userTeamRegistration.status === 'ACCEPTED' ? 'text-green-700' :
-                      userTeamRegistration.status === 'PENDING' ? 'text-blue-700' :
-                      userTeamRegistration.status === 'WITHDRAW_REQUESTED' ? 'text-orange-700' :
-                      userTeamRegistration.status === 'REMOVED' ? 'text-orange-700' :
-                      'text-red-700'
-                    }`}>
+                    <p className="text-white/70 text-sm mt-1">
                       {userTeamRegistration.status === 'ACCEPTED' && 
                         `L'équipe ${userTeamRegistration.team.name} [${userTeamRegistration.team.tag}] participe au tournoi`}
                       {userTeamRegistration.status === 'PENDING' && 
@@ -111,7 +111,7 @@ export default async function TournamentDetailPage({
                   </div>
                 </div>
                 <Link href={`/teams/${userTeamRegistration.team.id}`}>
-                  <Button variant="outline">
+                  <Button variant="outline" className="border-white/20 text-white hover:bg-white/10">
                     Voir mon équipe
                   </Button>
                 </Link>
@@ -121,27 +121,27 @@ export default async function TournamentDetailPage({
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
             <div>
-              <h3 className="text-sm font-medium text-gray-500 mb-1">Statut</h3>
-              <p className="text-lg font-semibold">{tournament.status}</p>
+              <h3 className="text-sm font-medium text-white/50 mb-1">Statut</h3>
+              <p className="text-lg font-semibold text-white">{tournament.status}</p>
             </div>
             <div>
-              <h3 className="text-sm font-medium text-gray-500 mb-1">Format</h3>
-              <p className="text-lg">{tournament.format} - {tournament.matchFormat}</p>
+              <h3 className="text-sm font-medium text-white/50 mb-1">Format</h3>
+              <p className="text-lg text-white">{tournament.format} - {tournament.matchFormat}</p>
             </div>
             <div>
-              <h3 className="text-sm font-medium text-gray-500 mb-1">Équipes</h3>
-              <p className="text-lg">{acceptedTeams.length} / {tournament.maxTeams}</p>
+              <h3 className="text-sm font-medium text-white/50 mb-1">Équipes</h3>
+              <p className="text-lg text-white">{acceptedTeams.length} / {tournament.maxTeams}</p>
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
             <div>
-              <h3 className="text-sm font-medium text-gray-500 mb-1">Début du tournoi</h3>
-              <p className="text-lg">{formatDate(tournament.startDate)}</p>
+              <h3 className="text-sm font-medium text-white/50 mb-1">Début du tournoi</h3>
+              <p className="text-lg text-white">{formatDate(tournament.startDate)}</p>
             </div>
             <div>
-              <h3 className="text-sm font-medium text-gray-500 mb-1">Inscriptions</h3>
-              <p className="text-lg">
+              <h3 className="text-sm font-medium text-white/50 mb-1">Inscriptions</h3>
+              <p className="text-lg text-white">
                 Du {formatDateShort(tournament.registrationOpenAt)} au{' '}
                 {formatDateShort(tournament.registrationCloseAt)}
               </p>
@@ -151,35 +151,37 @@ export default async function TournamentDetailPage({
 
         {/* Description et règles */}
         {(tournament.description || tournament.rules) && (
-          <div className="bg-white rounded-lg shadow-md p-8 mb-8">
+          <div className="glass-card rounded-4xl p-8 mb-8 border border-white/20">
             {tournament.description && (
               <div className="mb-6">
-                <h2 className="text-2xl font-bold mb-4">Description</h2>
-                <p className="text-gray-700 whitespace-pre-line">{tournament.description}</p>
+                <h2 className="text-2xl font-bold text-white mb-4">Description</h2>
+                <p className="text-white/80 whitespace-pre-line">{tournament.description}</p>
               </div>
             )}
 
             {tournament.rules && (
               <div>
-                <h2 className="text-2xl font-bold mb-4">Règlement</h2>
-                <p className="text-gray-700 whitespace-pre-line">{tournament.rules}</p>
+                <h2 className="text-2xl font-bold text-white mb-4">Règlement</h2>
+                <div className="text-white/80 prose prose-invert max-w-none whitespace-pre-line">
+                  {tournament.rules}
+                </div>
               </div>
             )}
           </div>
         )}
 
         {/* Équipes inscrites */}
-        <div className="bg-white rounded-lg shadow-md p-8 mb-8">
-          <h2 className="text-2xl font-bold mb-6">Équipes inscrites ({acceptedTeams.length})</h2>
+        <div className="glass-card rounded-4xl p-8 mb-8 border border-white/20">
+          <h2 className="text-2xl font-bold text-white mb-6">Équipes inscrites ({acceptedTeams.length})</h2>
 
           {acceptedTeams.length === 0 ? (
-            <p className="text-gray-500 text-center py-8">
+            <p className="text-white/60 text-center py-8">
               Aucune équipe inscrite pour le moment
             </p>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {acceptedTeams.map(tt => (
-                <div key={tt.id} className="border rounded-lg p-4 hover:border-primary-600 transition-colors">
+                <div key={tt.id} className="bg-white/5 border border-white/10 rounded-2xl p-4 hover:border-primary-500/50 hover:bg-white/10 transition-all">
                   <div className="flex items-center gap-4">
                     {tt.team.logo && (
                       <img
@@ -189,8 +191,8 @@ export default async function TournamentDetailPage({
                       />
                     )}
                     <div>
-                      <h3 className="font-bold">{tt.team.name}</h3>
-                      <p className="text-sm text-gray-600">[{tt.team.tag}]</p>
+                      <h3 className="font-bold text-white">{tt.team.name}</h3>
+                      <p className="text-sm text-white/60">[{tt.team.tag}]</p>
                     </div>
                   </div>
                 </div>
@@ -201,27 +203,27 @@ export default async function TournamentDetailPage({
 
         {/* Bracket */}
         {tournament.matches.length > 0 && (
-          <div className="bg-white rounded-lg shadow-md p-8">
-            <h2 className="text-2xl font-bold mb-6">Bracket & Matches</h2>
+          <div className="glass-card rounded-4xl p-8 border border-white/20">
+            <h2 className="text-2xl font-bold text-white mb-6">Bracket & Matches</h2>
             
             <div className="space-y-6">
               {Array.from(new Set(tournament.matches.map(m => m.round))).map(round => (
                 <div key={round}>
-                  <h3 className="text-xl font-semibold mb-4">{round}</h3>
+                  <h3 className="text-xl font-semibold text-white mb-4">{round}</h3>
                   <div className="space-y-3">
                     {tournament.matches
                       .filter(m => m.round === round)
                       .map(match => (
                         <div
                           key={match.id}
-                          className="border rounded-lg p-4 flex justify-between items-center"
+                          className="bg-white/5 border border-white/10 rounded-2xl p-4 flex justify-between items-center hover:bg-white/10 transition-all"
                         >
                           <div className="flex-1">
-                            <p className="font-medium">
+                            <p className="font-medium text-white">
                               {match.teamA?.name || 'TBD'} vs {match.teamB?.name || 'TBD'}
                             </p>
                             {match.scheduledAt && (
-                              <p className="text-sm text-gray-600">
+                              <p className="text-sm text-white/60">
                                 {formatDate(match.scheduledAt)}
                               </p>
                             )}
@@ -229,19 +231,19 @@ export default async function TournamentDetailPage({
                           
                           {match.status === 'COMPLETED' && (
                             <div className="text-right">
-                              <p className="text-lg font-bold">
+                              <p className="text-lg font-bold text-white">
                                 {match.scoreTeamA} - {match.scoreTeamB}
                               </p>
                             </div>
                           )}
                           
                           <span
-                            className={`px-3 py-1 rounded-full text-xs ml-4 ${
+                            className={`px-3 py-1 rounded-full text-xs ml-4 font-medium ${
                               match.status === 'COMPLETED'
-                                ? 'bg-gray-100 text-gray-800'
+                                ? 'bg-white/10 text-white/80'
                                 : match.status === 'ONGOING'
-                                ? 'bg-yellow-100 text-yellow-800'
-                                : 'bg-blue-100 text-blue-800'
+                                ? 'bg-yellow-500/20 text-yellow-400'
+                                : 'bg-blue-500/20 text-blue-400'
                             }`}
                           >
                             {match.status}

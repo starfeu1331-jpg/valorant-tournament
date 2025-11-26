@@ -2,14 +2,106 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply bg-white text-gray-900;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800;900&display=swap');
+
+@layer base {
+  * {
+    @apply border-gray-200;
+  }
+  
+  body {
+    @apply bg-white text-gray-900 antialiased;
+  }
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+  
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #fe2860 0%, #ff6388 100%);
+    background-size: 200% 200%;
+    animation: gradient-move 4s ease infinite;
+  }
+  
+  .glass-card {
+    @apply bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl;
+  }
+  
+  .glass-card-light {
+    @apply bg-white/90 backdrop-blur-xl border border-gray-100 shadow-2xl;
+  }
+  
+  .btn-primary {
+    @apply text-white font-bold rounded-3xl px-8 py-4 transition-all duration-300 hover:scale-105 hover:shadow-2xl;
+    background-image: linear-gradient(135deg, #fe2860 0%, #ff6388 100%);
+  }
+  
+  .card-hover {
+    @apply transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1 hover:shadow-2xl;
+  }
+}
+
+/* Animations personnalisées */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gradient-move {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 1s ease-out;
+}
+
+.animate-gradient {
+  animation: gradient-move 4s ease infinite;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply rounded-full;
+  background: linear-gradient(135deg, #fe2860 0%, #ff6388 100%);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #fe2860;
 }
 
 @keyframes typing-dot {

@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -153,6 +153,7 @@ model Tournament {
   registrationCloseAt   DateTime
   startDate             DateTime
   endDate               DateTime?
+  winnerId              String?           // Équipe gagnante du tournoi
   timezone              String            @default("Europe/Paris")
   pickBanEnabled        Boolean           @default(false)
   pickBanModel          String?           // JSON string du modèle pick & ban

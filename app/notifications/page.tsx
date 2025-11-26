@@ -68,34 +68,40 @@ export default async function NotificationsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-8">
+    <div className="min-h-screen py-8">
+      {/* Bulles décoratives */}
+      <div className="fixed top-20 right-20 w-96 h-96 bg-yellow-500/10 rounded-full filter blur-3xl pointer-events-none animate-float" />
+      <div className="fixed bottom-20 left-20 w-96 h-96 bg-orange-500/10 rounded-full filter blur-3xl pointer-events-none animate-float" style={{animationDelay: '1s'}} />
+      
+      <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl mx-auto">
-          <div className="flex items-center justify-between mb-8">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">Notifications</h1>
+          <div className="glass-card rounded-4xl p-8 border border-white/20 mb-8">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+              <div>
+                <h1 className="text-4xl md:text-5xl font-display font-black text-white">Notifications</h1>
+                {unreadCount > 0 && (
+                  <p className="text-white/80 mt-1">
+                    {unreadCount} notification{unreadCount > 1 ? 's' : ''} non lue{unreadCount > 1 ? 's' : ''}
+                  </p>
+                )}
+              </div>
               {unreadCount > 0 && (
-                <p className="text-gray-600 mt-1">
-                  {unreadCount} notification{unreadCount > 1 ? 's' : ''} non lue{unreadCount > 1 ? 's' : ''}
-                </p>
+                <form action={handleMarkAllAsRead}>
+                  <Button type="submit" variant="outline" className="bg-white/5 border-white/20 text-white hover:bg-white/10">
+                    Tout marquer comme lu
+                  </Button>
+                </form>
               )}
             </div>
-            {unreadCount > 0 && (
-              <form action={handleMarkAllAsRead}>
-                <Button type="submit" variant="outline">
-                  Tout marquer comme lu
-                </Button>
-              </form>
-            )}
           </div>
 
           {notifications.length === 0 ? (
-            <div className="bg-white rounded-lg shadow p-12 text-center">
+            <div className="glass-card rounded-4xl border border-white/20 p-12 text-center">
               <div className="text-6xl mb-4">🔔</div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">
+              <h2 className="text-2xl font-display font-black text-white mb-2">
                 Aucune notification
               </h2>
-              <p className="text-gray-600">
+              <p className="text-white/70">
                 Vous serez notifié ici des événements importants
               </p>
             </div>
@@ -104,8 +110,8 @@ export default async function NotificationsPage() {
               {notifications.map((notification: any) => (
                 <div
                   key={notification.id}
-                  className={`bg-white rounded-lg shadow p-4 ${
-                    !notification.read ? 'border-l-4 border-primary-500' : ''
+                  className={`glass-card rounded-3xl border p-4 ${
+                    !notification.read ? 'border-primary-500/50 bg-primary-500/5' : 'border-white/20'
                   }`}
                 >
                   <div className="flex items-start justify-between gap-4">
@@ -114,21 +120,21 @@ export default async function NotificationsPage() {
                         <span className="text-2xl">
                           {getNotificationIcon(notification.type)}
                         </span>
-                        <h3 className="font-bold text-gray-900">{notification.title}</h3>
+                        <h3 className="font-bold text-white">{notification.title}</h3>
                         {!notification.read && (
-                          <span className="px-2 py-1 bg-primary-100 text-primary-700 text-xs font-medium rounded-full">
+                          <span className="px-2 py-1 bg-primary-500/20 text-primary-300 text-xs font-bold rounded-full border border-primary-500/30">
                             Nouveau
                           </span>
                         )}
                       </div>
-                      <p className="text-gray-700 text-sm">{notification.message}</p>
-                      <p className="text-xs text-gray-500 mt-2">
+                      <p className="text-white/80 text-sm">{notification.message}</p>
+                      <p className="text-xs text-white/60 mt-2">
                         {new Date(notification.createdAt).toLocaleString('fr-FR')}
                       </p>
                       {notification.relatedId && getNotificationLink(notification) !== '#' && (
                         <Link
                           href={getNotificationLink(notification)}
-                          className="text-primary-600 hover:text-primary-700 text-sm font-medium inline-block mt-2"
+                          className="text-primary-400 hover:text-primary-300 text-sm font-bold inline-block mt-2"
                         >
                           Voir →
                         </Link>
@@ -137,7 +143,7 @@ export default async function NotificationsPage() {
                     {!notification.read && (
                       <form action={handleMarkAsRead}>
                         <input type="hidden" name="notificationId" value={notification.id} />
-                        <Button type="submit" variant="outline" size="sm">
+                        <Button type="submit" variant="outline" size="sm" className="bg-white/5 border-white/20 text-white hover:bg-white/10">
                           Marquer comme lu
                         </Button>
                       </form>

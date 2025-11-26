@@ -12,11 +12,15 @@ function SignInContent() {
   const callbackUrl = searchParams.get('callbackUrl') || '/'
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow-lg">
-        <div className="text-center">
-          <h2 className="text-3xl font-bold text-gray-900">Connexion</h2>
-          <p className="mt-2 text-sm text-gray-600">
+    <div className="min-h-screen flex items-center justify-center relative">
+      {/* Decorative bubbles */}
+      <div className="fixed top-20 right-20 w-96 h-96 bg-[#5865F2]/10 rounded-full blur-3xl animate-float" />
+      <div className="fixed bottom-20 left-20 w-96 h-96 bg-primary-500/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
+
+      <div className="max-w-md w-full space-y-8 p-8 md:p-12 glass-card rounded-4xl border border-white/20 relative z-10">
+        <div className="text-center space-y-4">
+          <h2 className="text-4xl font-display font-black text-white">Connexion</h2>
+          <p className="text-base text-white/70">
             Connectez-vous avec Discord pour accéder à la plateforme
           </p>
         </div>
@@ -24,7 +28,7 @@ function SignInContent() {
         <div className="mt-8">
           <Button
             onClick={() => signIn('discord', { callbackUrl })}
-            className="w-full bg-[#5865F2] hover:bg-[#4752C4] text-white"
+            className="w-full bg-[#5865F2] hover:bg-[#4752C4] text-white font-semibold py-6 rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#5865F2]/30"
             size="lg"
           >
             <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
@@ -34,7 +38,7 @@ function SignInContent() {
           </Button>
         </div>
 
-        <div className="mt-6 text-center text-sm text-gray-500">
+        <div className="mt-6 text-center text-sm text-white/60">
           <p>
             En vous connectant, vous acceptez nos conditions d'utilisation
             et notre politique de confidentialité.
@@ -48,8 +52,8 @@ function SignInContent() {
 export default function SignInPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center">Chargement...</div>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center text-white">Chargement...</div>
       </div>
     }>
       <SignInContent />

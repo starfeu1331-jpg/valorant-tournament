@@ -112,23 +112,27 @@ export default async function MessagesPage() {
   )
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="container mx-auto px-4 max-w-4xl">
-        <div className="bg-white rounded-lg shadow-md">
+    <div className="min-h-screen py-8">
+      {/* Bulles décoratives */}
+      <div className="fixed top-20 left-20 w-96 h-96 bg-purple-500/10 rounded-full filter blur-3xl pointer-events-none animate-float" />
+      <div className="fixed bottom-20 right-20 w-96 h-96 bg-pink-500/10 rounded-full filter blur-3xl pointer-events-none animate-float" style={{animationDelay: '2s'}} />
+      
+      <div className="container mx-auto px-4 max-w-4xl relative z-10">
+        <div className="glass-card rounded-4xl border border-white/20">
           {/* Header */}
-          <div className="p-6 border-b">
-            <h1 className="text-2xl font-bold">Messages</h1>
-            <p className="text-gray-600 mt-1">
+          <div className="p-6 border-b border-white/10">
+            <h1 className="text-3xl font-display font-black text-white">Messages</h1>
+            <p className="text-white/80 mt-1">
               Conversations avec le staff et les autres joueurs
             </p>
           </div>
 
           {/* Liste des conversations */}
-          <div className="divide-y">
+          <div className="divide-y divide-white/10">
             {allConversations.length === 0 ? (
-              <div className="p-8 text-center text-gray-500">
+              <div className="p-8 text-center text-white/70">
                 <p className="text-lg">Aucun message</p>
-                <p className="text-sm mt-2">
+                <p className="text-sm mt-2 text-white/60">
                   Vos conversations avec le staff et les autres joueurs apparaîtront ici
                 </p>
               </div>
@@ -137,7 +141,7 @@ export default async function MessagesPage() {
                 <Link
                   key={conv.type === 'private' ? conv.otherUser.id : conv.conversation.id}
                   href={conv.link}
-                  className="block p-4 hover:bg-gray-50 transition-colors"
+                  className="block p-4 hover:bg-white/5 transition-colors"
                 >
                   <div className="flex items-start gap-4">
                     {/* Avatar */}
@@ -147,7 +151,7 @@ export default async function MessagesPage() {
                           <img
                             src={conv.otherUser.image || `https://api.dicebear.com/7.x/avataaars/svg?seed=${conv.otherUser.username}`}
                             alt={conv.otherUser.username}
-                            className="w-12 h-12 rounded-full"
+                            className="w-12 h-12 rounded-full border-2 border-white/20"
                           />
                           {conv.otherUser.role === 'STAFF' && (
                             <span className="absolute -top-1 -right-1 text-xs">⭐</span>
@@ -166,50 +170,50 @@ export default async function MessagesPage() {
                     {/* Contenu */}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-baseline justify-between gap-2">
-                        <h3 className="font-semibold text-gray-900 truncate">
+                        <h3 className="font-bold text-white truncate">
                           {conv.type === 'private' ? (
                             <>
                               {conv.otherUser.username}
                               {conv.otherUser.role === 'STAFF' && (
-                                <span className="ml-2 text-xs text-yellow-600">Staff</span>
+                                <span className="ml-2 text-xs text-yellow-400">Staff</span>
                               )}
                               {conv.otherUser.role === 'ADMIN' && (
-                                <span className="ml-2 text-xs text-purple-600">Admin</span>
+                                <span className="ml-2 text-xs text-purple-400">Admin</span>
                               )}
                             </>
                           ) : (
                             <>
                               Support Staff
-                              <span className={`ml-2 px-2 py-0.5 text-xs rounded ${
+                              <span className={`ml-2 px-2 py-0.5 text-xs rounded font-bold ${
                                 conv.conversation.status === 'OPEN' 
-                                  ? 'bg-green-100 text-green-800' 
-                                  : 'bg-gray-100 text-gray-800'
+                                  ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' 
+                                  : 'bg-white/10 text-white/80 border border-white/20'
                               }`}>
                                 {conv.conversation.status === 'OPEN' ? 'En cours' : 'Résolue'}
                               </span>
                             </>
                           )}
                         </h3>
-                        <time className="text-xs text-gray-500 flex-shrink-0">
+                        <time className="text-xs text-white/60 flex-shrink-0">
                           {formatDate(conv.lastMessage.createdAt)}
                         </time>
                       </div>
 
                       {conv.lastMessage.subject && (
-                        <p className="text-sm font-medium text-gray-700 mt-1 truncate">
+                        <p className="text-sm font-bold text-white/90 mt-1 truncate">
                           {conv.lastMessage.subject}
                         </p>
                       )}
 
-                      <p className="text-sm text-gray-600 mt-1 truncate">
+                      <p className="text-sm text-white/70 mt-1 truncate">
                         {conv.type === 'private' && conv.lastMessage.senderId === session.user.id && (
-                          <span className="text-gray-500">Vous: </span>
+                          <span className="text-white/50">Vous: </span>
                         )}
                         {conv.lastMessage.content}
                       </p>
 
                       {conv.unreadCount > 0 && (
-                        <span className="inline-block mt-2 px-2 py-0.5 bg-primary-100 text-primary-700 text-xs font-medium rounded-full">
+                        <span className="inline-block mt-2 px-2 py-0.5 bg-primary-500/20 text-primary-300 text-xs font-bold rounded-full border border-primary-500/30">
                           {conv.unreadCount} nouveau{conv.unreadCount > 1 ? 'x' : ''}
                         </span>
                       )}

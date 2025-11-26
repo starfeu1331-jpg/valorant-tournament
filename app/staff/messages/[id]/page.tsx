@@ -131,29 +131,33 @@ export default async function StaffConversationPage({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-8 max-w-5xl">
+    <div className="min-h-screen bg-[url('/images/backgrounds/fond_of.jpg')] bg-cover bg-center bg-fixed relative">
+      <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/70 to-black/80 pointer-events-none" />
+      <div className="fixed top-20 left-10 w-96 h-96 bg-red-600/10 rounded-full blur-3xl animate-float" />
+      <div className="fixed bottom-20 right-10 w-80 h-80 bg-orange-600/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
+      
+      <div className="container mx-auto px-4 py-8 max-w-5xl relative z-10">
         {/* Header */}
-        <div className="bg-white rounded-lg shadow mb-6 p-6">
+        <div className="glass-card rounded-4xl border border-white/20 mb-6 p-6">
           <div className="flex justify-between items-start mb-4">
             <div className="flex items-center gap-4">
               <Link href="/staff/messages">
-                <Button variant="outline" size="sm">← Retour</Button>
+                <Button className="bg-white/5 border border-white/20 text-white hover:bg-white/10 rounded-xl" size="sm">← Retour</Button>
               </Link>
               <div>
-                <h1 className="text-2xl font-bold">{conversation.subject}</h1>
-                <p className="text-gray-600 mt-1">
+                <h1 className="text-2xl font-bold text-white">{conversation.subject}</h1>
+                <p className="text-white/70 mt-1">
                   Conversation avec{' '}
-                  <Link href={`/joueurs/${conversation.user.id}`} className="font-medium text-blue-600 hover:underline">
+                  <Link href={`/joueurs/${conversation.user.id}`} className="font-medium text-blue-400 hover:text-blue-300 transition-colors">
                     {conversation.user.username}
                   </Link>
                   {conversation.user.role === 'STAFF' && (
-                    <span className="ml-2 px-2 py-0.5 bg-purple-100 text-purple-800 text-xs rounded">
+                    <span className="ml-2 px-2 py-0.5 bg-purple-500/20 text-purple-300 text-xs rounded border border-purple-500/30">
                       STAFF
                     </span>
                   )}
                   {conversation.user.role === 'ADMIN' && (
-                    <span className="ml-2 px-2 py-0.5 bg-red-100 text-red-800 text-xs rounded">
+                    <span className="ml-2 px-2 py-0.5 bg-red-500/20 text-red-300 text-xs rounded border border-red-500/30">
                       ADMIN
                     </span>
                   )}
@@ -162,10 +166,10 @@ export default async function StaffConversationPage({
             </div>
             <div className="flex items-center gap-2">
               <span
-                className={`px-3 py-1 rounded font-medium text-sm ${
+                className={`px-3 py-1 rounded-full font-medium text-sm border ${
                   conversation.status === 'OPEN'
-                    ? 'bg-green-100 text-green-800'
-                    : 'bg-gray-100 text-gray-800'
+                    ? 'bg-green-500/20 text-green-300 border-green-500/30'
+                    : 'bg-white/10 text-white/60 border-white/20'
                 }`}
               >
                 {conversation.status === 'OPEN' ? 'OUVERT' : 'FERMÉ'}
@@ -177,13 +181,13 @@ export default async function StaffConversationPage({
                   name="newStatus"
                   value={conversation.status === 'OPEN' ? 'CLOSED' : 'OPEN'}
                 />
-                <Button type="submit" variant="outline" size="sm">
+                <Button type="submit" className="bg-white/5 border border-white/20 text-white hover:bg-white/10 rounded-xl" size="sm">
                   {conversation.status === 'OPEN' ? 'Fermer' : 'Rouvrir'}
                 </Button>
               </form>
             </div>
           </div>
-          <div className="text-sm text-gray-500">
+          <div className="text-sm text-white/40">
             Créée le {new Date(conversation.createdAt).toLocaleDateString('fr-FR')} à{' '}
             {new Date(conversation.createdAt).toLocaleTimeString('fr-FR', {
               hour: '2-digit',
@@ -195,7 +199,7 @@ export default async function StaffConversationPage({
         </div>
 
         {/* Messages */}
-        <div className="bg-white rounded-lg shadow mb-6 p-6">
+        <div className="glass-card rounded-4xl border border-white/20 mb-6 p-6">
           <MessagesContainer
             conversationId={conversation.id}
             initialMessages={conversation.messages}
@@ -207,15 +211,15 @@ export default async function StaffConversationPage({
 
         {/* Formulaire de réponse */}
         {conversation.status === 'OPEN' && (
-          <div className="bg-white rounded-lg shadow p-6">
-            <h3 className="font-bold mb-4">Répondre</h3>
+          <div className="glass-card rounded-4xl border border-white/20 p-6">
+            <h3 className="font-bold mb-4 text-white">Répondre</h3>
             <StaffReplyForm conversationId={conversation.id} action={sendStaffMessage} />
           </div>
         )}
 
         {conversation.status === 'CLOSED' && (
-          <div className="bg-gray-100 rounded-lg p-6 text-center">
-            <p className="text-gray-600">
+          <div className="glass-card rounded-4xl border border-white/20 p-6 text-center">
+            <p className="text-white/70">
               Cette conversation est fermée. Rouvrez-la pour pouvoir répondre.
             </p>
           </div>

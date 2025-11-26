@@ -123,31 +123,35 @@ export default async function PlayerStaffConversationPage({
   const isStaffMember = session.user.role === 'STAFF' || session.user.role === 'ADMIN'
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-8 max-w-5xl">
+    <div className="min-h-screen bg-[url('/images/backgrounds/fond_of.jpg')] bg-cover bg-center bg-fixed relative">
+      <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/70 to-black/80 pointer-events-none" />
+      <div className="fixed top-20 left-10 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl animate-float" />
+      <div className="fixed bottom-20 right-10 w-80 h-80 bg-blue-600/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
+      
+      <div className="container mx-auto px-4 py-8 max-w-5xl relative z-10">
         {/* Header */}
-        <div className="bg-white rounded-lg shadow mb-6 p-6">
+        <div className="glass-card rounded-4xl border border-white/20 mb-6 p-6">
           <div className="flex justify-between items-start mb-4">
             <div className="flex items-center gap-4">
               <Link href="/messages/staff">
-                <Button variant="outline" size="sm">← Mes conversations</Button>
+                <Button className="bg-white/5 border border-white/20 text-white hover:bg-white/10 rounded-xl" size="sm">← Mes conversations</Button>
               </Link>
               <div>
-                <h1 className="text-2xl font-bold">{conversation.subject}</h1>
-                <p className="text-gray-600 mt-1">Conversation avec le staff</p>
+                <h1 className="text-2xl font-bold text-white">{conversation.subject}</h1>
+                <p className="text-white/60 mt-1">Conversation avec le staff</p>
               </div>
             </div>
             <span
-              className={`px-3 py-1 rounded font-medium text-sm ${
+              className={`px-3 py-1 rounded-full font-medium text-sm border ${
                 conversation.status === 'OPEN'
-                  ? 'bg-green-100 text-green-800'
-                  : 'bg-gray-100 text-gray-800'
+                  ? 'bg-green-500/20 text-green-300 border-green-500/30'
+                  : 'bg-white/10 text-white/60 border-white/20'
               }`}
             >
               {conversation.status === 'OPEN' ? 'EN COURS' : 'RÉSOLUE'}
             </span>
           </div>
-          <div className="text-sm text-gray-500">
+          <div className="text-sm text-white/40">
             Créée le {new Date(conversation.createdAt).toLocaleDateString('fr-FR')} à{' '}
             {new Date(conversation.createdAt).toLocaleTimeString('fr-FR', {
               hour: '2-digit',
@@ -159,7 +163,7 @@ export default async function PlayerStaffConversationPage({
         </div>
 
         {/* Messages */}
-        <div className="bg-white rounded-lg shadow mb-6 p-6">
+        <div className="glass-card rounded-4xl border border-white/20 mb-6 p-6">
           <MessagesContainer
             conversationId={conversation.id}
             initialMessages={conversation.messages}
@@ -171,20 +175,20 @@ export default async function PlayerStaffConversationPage({
 
         {/* Formulaire de réponse */}
         {conversation.status === 'OPEN' && (
-          <div className="bg-white rounded-lg shadow p-6">
-            <h3 className="font-bold mb-4">Répondre</h3>
+          <div className="glass-card rounded-4xl border border-white/20 p-6">
+            <h3 className="font-bold mb-4 text-white">Répondre</h3>
             <PlayerReplyForm conversationId={conversation.id} action={sendPlayerMessage} />
           </div>
         )}
 
         {conversation.status === 'CLOSED' && (
-          <div className="bg-gray-100 rounded-lg p-6 text-center">
-            <p className="text-gray-600 mb-4">
+          <div className="glass-card rounded-4xl border border-white/20 p-6 text-center">
+            <p className="text-white/70 mb-4">
               Cette conversation a été résolue par le staff.
             </p>
             {!isStaffMember && (
               <Link href="/contact-staff">
-                <Button>Créer une nouvelle demande</Button>
+                <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-0 rounded-xl px-8">Créer une nouvelle demande</Button>
               </Link>
             )}
           </div>

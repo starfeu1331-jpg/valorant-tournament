@@ -39,47 +39,51 @@ export default async function StaffDashboard() {
   })
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
+      {/* Bulles décoratives */}
+      <div className="fixed top-20 left-20 w-96 h-96 bg-primary-500/10 rounded-full filter blur-3xl pointer-events-none animate-float" />
+      <div className="fixed bottom-20 right-20 w-96 h-96 bg-purple-500/10 rounded-full filter blur-3xl pointer-events-none animate-float" style={{animationDelay: '1.5s'}} />
+      
       {/* Header */}
-      <div className="bg-white border-b">
+      <div className="glass-card border-b border-white/10 sticky top-0 z-40 backdrop-blur-xl">
         <div className="container mx-auto px-4 py-6">
-          <div className="flex justify-between items-center">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
-              <h1 className="text-3xl font-bold">Dashboard Staff</h1>
-              <p className="text-gray-600 mt-1">Connecté en tant que {session.user.name}</p>
+              <h1 className="text-4xl font-display font-black text-white">Dashboard Staff</h1>
+              <p className="text-white/80 mt-1">Connecté en tant que {session.user.name}</p>
             </div>
             <div className="flex gap-4">
               <Link href="/staff/tournaments/create">
-                <Button size="lg">Créer un tournoi</Button>
+                <Button size="lg" className="bg-gradient-to-r from-primary-500 to-primary-600">Créer un tournoi</Button>
               </Link>
               <Link href="/">
-                <Button variant="outline">Retour au site</Button>
+                <Button variant="outline" className="bg-white/5 border-white/20 text-white hover:bg-white/10">Retour au site</Button>
               </Link>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 relative z-10">
         {/* Stats rapides */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h3 className="text-sm font-medium text-gray-500">Tournois actifs</h3>
-            <p className="text-3xl font-bold mt-2">
+          <div className="glass-card rounded-3xl border border-white/20 p-6">
+            <h3 className="text-sm font-bold text-white/70">Tournois actifs</h3>
+            <p className="text-4xl font-black text-gradient mt-2">
               {tournaments.filter(t => t.status === 'ONGOING').length}
             </p>
           </div>
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h3 className="text-sm font-medium text-gray-500">Tournois totaux</h3>
-            <p className="text-3xl font-bold mt-2">{tournaments.length}</p>
+          <div className="glass-card rounded-3xl border border-white/20 p-6">
+            <h3 className="text-sm font-bold text-white/70">Tournois totaux</h3>
+            <p className="text-4xl font-black text-gradient mt-2">{tournaments.length}</p>
           </div>
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h3 className="text-sm font-medium text-gray-500">Équipes en attente</h3>
-            <p className="text-3xl font-bold mt-2 text-yellow-600">{pendingTeams}</p>
+          <div className="glass-card rounded-3xl border border-white/20 p-6">
+            <h3 className="text-sm font-bold text-white/70">Équipes en attente</h3>
+            <p className="text-4xl font-black text-yellow-400 mt-2">{pendingTeams}</p>
           </div>
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h3 className="text-sm font-medium text-gray-500">Matches à venir</h3>
-            <p className="text-3xl font-bold mt-2">
+          <div className="glass-card rounded-3xl border border-white/20 p-6">
+            <h3 className="text-sm font-bold text-white/70">Matches à venir</h3>
+            <p className="text-4xl font-black text-gradient mt-2">
               {tournaments.reduce((acc, t) => acc + t._count.matches, 0)}
             </p>
           </div>
@@ -87,61 +91,61 @@ export default async function StaffDashboard() {
 
         {/* Messages des joueurs */}
         {openStaffConversations > 0 && (
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
-            <div className="flex justify-between items-center">
+          <div className="glass-card rounded-4xl border border-blue-500/30 bg-blue-500/5 p-6 mb-8">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <div>
-                <h3 className="text-lg font-bold text-blue-900 mb-1">
+                <h3 className="text-lg font-bold text-blue-300 mb-1">
                   💬 Messages des joueurs
                 </h3>
-                <p className="text-blue-700">
+                <p className="text-blue-200">
                   {openStaffConversations} conversation{openStaffConversations > 1 ? 's' : ''} en attente de réponse
                 </p>
               </div>
               <Link href="/staff/messages">
-                <Button>Voir les messages</Button>
+                <Button className="bg-gradient-to-r from-blue-500 to-blue-600">Voir les messages</Button>
               </Link>
             </div>
           </div>
         )}
 
         {/* Liste des tournois */}
-        <div className="bg-white rounded-lg shadow">
-          <div className="p-6 border-b">
-            <h2 className="text-2xl font-bold">Mes tournois</h2>
+        <div className="glass-card rounded-4xl border border-white/20">
+          <div className="p-6 border-b border-white/10">
+            <h2 className="text-3xl font-display font-black text-white">Mes tournois</h2>
           </div>
           
           {tournaments.length === 0 ? (
             <div className="p-12 text-center">
-              <p className="text-gray-500 mb-4">Aucun tournoi créé</p>
+              <p className="text-white/70 mb-4">Aucun tournoi créé</p>
               <Link href="/staff/tournaments/create">
-                <Button>Créer mon premier tournoi</Button>
+                <Button className="bg-gradient-to-r from-primary-500 to-primary-600">Créer mon premier tournoi</Button>
               </Link>
             </div>
           ) : (
-            <div className="divide-y">
+            <div className="divide-y divide-white/10">
               {tournaments.map(tournament => (
-                <div key={tournament.id} className="p-6 hover:bg-gray-50">
-                  <div className="flex justify-between items-start">
+                <div key={tournament.id} className="p-6 hover:bg-white/5 transition-colors">
+                  <div className="flex flex-col md:flex-row justify-between items-start gap-4">
                     <div className="flex-1">
-                      <h3 className="text-xl font-bold mb-1">{tournament.name}</h3>
-                      <p className="text-gray-600 mb-3">{tournament.game}</p>
+                      <h3 className="text-xl font-bold text-white mb-1">{tournament.name}</h3>
+                      <p className="text-white/70 mb-3">{tournament.game}</p>
                       
-                      <div className="flex gap-6 text-sm text-gray-600">
+                      <div className="flex flex-wrap gap-6 text-sm text-white/70">
                         <span>
-                          <strong>Équipes:</strong> {tournament._count.tournamentTeams} / {tournament.maxTeams}
+                          <strong className="text-white">Équipes:</strong> {tournament._count.tournamentTeams} / {tournament.maxTeams}
                         </span>
                         <span>
-                          <strong>Matches:</strong> {tournament._count.matches}
+                          <strong className="text-white">Matches:</strong> {tournament._count.matches}
                         </span>
                         <span>
-                          <strong>Statut:</strong>{' '}
+                          <strong className="text-white">Statut:</strong>{' '}
                           <span
-                            className={`font-medium ${
+                            className={`font-bold ${
                               tournament.status === 'ONGOING'
-                                ? 'text-yellow-600'
+                                ? 'text-yellow-400'
                                 : tournament.status === 'COMPLETED'
-                                ? 'text-gray-600'
-                                : 'text-blue-600'
+                                ? 'text-gray-400'
+                                : 'text-blue-400'
                             }`}
                           >
                             {tournament.status}
@@ -151,7 +155,7 @@ export default async function StaffDashboard() {
                     </div>
                     
                     <Link href={`/staff/tournaments/${tournament.id}`}>
-                      <Button variant="outline">Gérer</Button>
+                      <Button variant="outline" className="bg-white/5 border-white/20 text-white hover:bg-white/10">Gérer</Button>
                     </Link>
                   </div>
                 </div>

@@ -35,15 +35,15 @@ export function MessagesContainer({
   const [messages, setMessages] = useState<Message[]>(initialMessages)
   const [typingUsers, setTypingUsers] = useState<string[]>([])
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const hasScrolledRef = useRef(false)
 
-  // Auto-scroll vers le bas
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }
-
+  // Scroll initial uniquement au premier chargement
   useEffect(() => {
-    scrollToBottom()
-  }, [messages])
+    if (!hasScrolledRef.current) {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+      hasScrolledRef.current = true
+    }
+  }, [])
 
   // Polling pour nouveaux messages toutes les 2 secondes
   useEffect(() => {
@@ -108,21 +108,21 @@ export function MessagesContainer({
                   alignRight ? 'justify-end' : 'justify-start'
                 }`}
               >
-                <span className="font-medium">
+                <span className="font-bold text-white">
                   {isMyMessage ? 'Vous' : message.sender.username}
                 </span>
                 {isStaffSender && (
                   <span
-                    className={`px-2 py-0.5 text-xs rounded ${
+                    className={`px-2 py-0.5 text-xs rounded border ${
                       message.sender.role === 'ADMIN'
-                        ? 'bg-red-100 text-red-800'
-                        : 'bg-purple-100 text-purple-800'
+                        ? 'bg-red-500/20 text-red-300 border-red-500/30'
+                        : 'bg-purple-500/20 text-purple-300 border-purple-500/30'
                     }`}
                   >
                     {message.sender.role}
                   </span>
                 )}
-                <span className="text-xs text-gray-500">
+                <span className="text-xs text-white/60">
                   {new Date(message.createdAt).toLocaleDateString('fr-FR')} à{' '}
                   {new Date(message.createdAt).toLocaleTimeString('fr-FR', {
                     hour: '2-digit',
@@ -131,7 +131,7 @@ export function MessagesContainer({
                 </span>
                 {/* Indicateur "Lu" visible UNIQUEMENT dans la vue staff (pas pour les joueurs) */}
                 {isStaffView && !isStaffReply && message.readByStaff && (
-                  <span className="text-xs text-gray-500">✓ Lu</span>
+                  <span className="text-xs text-white/60">✓ Lu</span>
                 )}
               </div>
               <div
