@@ -35,7 +35,7 @@ export async function GET(
             createdAt: 'desc'
           },
           include: {
-            team1: {
+            teamA: {
               include: {
                 players: {
                   include: {
@@ -44,7 +44,7 @@ export async function GET(
                 }
               }
             },
-            team2: {
+            teamB: {
               include: {
                 players: {
                   include: {

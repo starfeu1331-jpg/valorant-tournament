@@ -88,13 +88,13 @@ export default function LiveOverlay({ tournament: initialTournament }: LiveOverl
             <div className="bg-white/10 backdrop-blur-xl border-2 border-white/20 rounded-3xl p-8 transform hover:scale-105 transition-transform">
               <div className="text-center">
                 <div className="text-6xl font-black text-white mb-4 drop-shadow-xl">
-                  {activeMatch.team1Score ?? 0}
+                  {activeMatch.teamAScore ?? 0}
                 </div>
                 <h3 className="text-3xl font-black text-white mb-2 drop-shadow-lg">
-                  {activeMatch.team1.name}
+                  {activeMatch.teamA.name}
                 </h3>
                 <p className="text-xl text-red-400 font-bold drop-shadow-md">
-                  {activeMatch.team1.tag}
+                  {activeMatch.teamA.tag}
                 </p>
               </div>
             </div>
@@ -115,13 +115,13 @@ export default function LiveOverlay({ tournament: initialTournament }: LiveOverl
             <div className="bg-white/10 backdrop-blur-xl border-2 border-white/20 rounded-3xl p-8 transform hover:scale-105 transition-transform">
               <div className="text-center">
                 <div className="text-6xl font-black text-white mb-4 drop-shadow-xl">
-                  {activeMatch.team2Score ?? 0}
+                  {activeMatch.teamBScore ?? 0}
                 </div>
                 <h3 className="text-3xl font-black text-white mb-2 drop-shadow-lg">
-                  {activeMatch.team2.name}
+                  {activeMatch.teamB.name}
                 </h3>
                 <p className="text-xl text-red-400 font-bold drop-shadow-md">
-                  {activeMatch.team2.tag}
+                  {activeMatch.teamB.tag}
                 </p>
               </div>
             </div>

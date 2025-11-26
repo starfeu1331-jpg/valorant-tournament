@@ -32,7 +32,7 @@ async function getActiveTournament() {
           createdAt: 'desc'
         },
         include: {
-          team1: {
+          teamA: {
             include: {
               players: {
                 include: {
@@ -41,7 +41,7 @@ async function getActiveTournament() {
               }
             }
           },
-          team2: {
+          teamB: {
             include: {
               players: {
                 include: {
