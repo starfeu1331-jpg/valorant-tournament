@@ -4,6 +4,11 @@ import LiveOverlay from '@/components/overlay/live-overlay'
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
+// Désactiver le layout global pour avoir un fond transparent
+export const metadata = {
+  title: 'Live Overlay',
+}
+
 async function getActiveTournament() {
   // Récupère le tournoi en cours avec tous ses matchs
   const tournament = await prisma.tournament.findFirst({
