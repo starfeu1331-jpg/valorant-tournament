@@ -125,8 +125,8 @@ export default async function PublicTeamDetailPage({
                   <span
                     className={`px-3 py-1 rounded-full text-sm font-medium ${
                       player.role === 'CAPTAIN'
-                        ? 'bg-yellow-100 text-yellow-800'
-                        : 'bg-gray-100 text-gray-700'
+                        ? 'bg-yellow-500/20 text-yellow-300 border border-yellow-500/30'
+                        : 'bg-white/10 text-white/70 border border-white/20'
                     }`}
                   >
                     {player.role === 'CAPTAIN' ? '👑 Capitaine' : 'Joueur'}

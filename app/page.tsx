@@ -69,7 +69,7 @@ export default async function HomePage() {
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 md:gap-6 justify-center items-center mb-8 md:mb-12 w-full px-4">
               <Link href="/tournaments" className="w-full sm:w-auto flex justify-center">
-                <button className="group relative px-6 md:px-10 py-3 md:py-5 bg-white text-gray-900 rounded-2xl md:rounded-3xl font-bold text-sm md:text-lg overflow-hidden transition-all duration-500 hover:scale-110 hover:shadow-2xl shadow-xl w-full sm:w-auto">
+                <button className="group relative px-6 md:px-10 py-3 md:py-5 bg-white text-black rounded-2xl md:rounded-3xl font-bold text-sm md:text-lg overflow-hidden transition-all duration-500 hover:scale-110 hover:shadow-2xl shadow-xl w-full sm:w-auto">
                   <span className="relative z-10 flex items-center justify-center gap-2 md:gap-3">
                     🏆 <span>Voir les tournois</span>
                   </span>
@@ -115,22 +115,22 @@ export default async function HomePage() {
 
       {/* Registration Open Tournaments */}
       {registrationOpenTournaments.length > 0 && (
-        <section className="py-16 md:py-32 relative overflow-hidden bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50">
+        <section className="py-16 md:py-32 relative overflow-hidden">
           {/* Formes décoratives */}
-          <div className="absolute top-20 right-20 w-96 h-96 bg-emerald-300 rounded-full filter blur-3xl opacity-20 animate-float" />
-          <div className="absolute bottom-20 left-20 w-96 h-96 bg-teal-300 rounded-full filter blur-3xl opacity-20 animate-float" style={{animationDelay: '2s'}} />
+          <div className="absolute top-20 right-20 w-96 h-96 bg-red-500 rounded-full filter blur-3xl opacity-10 animate-float" />
+          <div className="absolute bottom-20 left-20 w-96 h-96 bg-red-400 rounded-full filter blur-3xl opacity-10 animate-float" style={{animationDelay: '2s'}} />
           
           <div className="container mx-auto px-4 md:px-6 relative z-10">
             <div className="text-center mb-8 md:mb-16 space-y-4 md:space-y-6">
               <div className="inline-block">
-                <span className="px-4 md:px-8 py-2 md:py-3 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-full font-black text-xs md:text-sm tracking-wider animate-bounce shadow-lg">
+                <span className="px-4 md:px-8 py-2 md:py-3 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-full font-black text-xs md:text-sm tracking-wider animate-bounce shadow-lg">
                   🔥 INSCRIPTIONS OUVERTES
                 </span>
               </div>
-              <h2 className="text-3xl md:text-5xl lg:text-7xl font-display font-black text-gray-900 px-4">
+              <h2 className="text-3xl md:text-5xl lg:text-7xl font-display font-black text-white px-4">
                 Rejoins <span className="text-gradient">maintenant</span>
               </h2>
-              <p className="text-gray-600 text-sm md:text-xl max-w-2xl mx-auto font-medium px-4">
+              <p className="text-white/70 text-sm md:text-xl max-w-2xl mx-auto font-medium px-4">
                 Les inscriptions sont ouvertes ! Ne rate pas ta chance de participer aux meilleurs tournois
               </p>
             </div>
@@ -148,21 +148,21 @@ export default async function HomePage() {
 
       {/* Ongoing Tournaments */}
       {ongoingTournaments.length > 0 && (
-        <section className="py-16 md:py-32 relative overflow-hidden bg-gradient-to-br from-orange-50 via-red-50 to-pink-50">
-          <div className="absolute top-1/4 right-1/4 w-80 h-80 bg-orange-300 rounded-full filter blur-3xl opacity-20 animate-float" />
-          <div className="absolute bottom-1/4 left-1/4 w-80 h-80 bg-red-300 rounded-full filter blur-3xl opacity-20 animate-float" style={{animationDelay: '1.5s'}} />
+        <section className="py-16 md:py-32 relative overflow-hidden">
+          <div className="absolute top-1/4 right-1/4 w-80 h-80 bg-red-500 rounded-full filter blur-3xl opacity-10 animate-float" />
+          <div className="absolute bottom-1/4 left-1/4 w-80 h-80 bg-red-400 rounded-full filter blur-3xl opacity-10 animate-float" style={{animationDelay: '1.5s'}} />
           
           <div className="container mx-auto px-4 md:px-6 relative z-10">
             <div className="text-center mb-8 md:mb-16 space-y-4 md:space-y-6">
               <div className="inline-block">
-                <span className="px-4 md:px-8 py-2 md:py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-full font-black text-xs md:text-sm tracking-wider shadow-lg">
+                <span className="px-4 md:px-8 py-2 md:py-3 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-full font-black text-xs md:text-sm tracking-wider shadow-lg">
                   ⚡ EN DIRECT MAINTENANT
                 </span>
               </div>
-              <h2 className="text-5xl md:text-7xl font-display font-black text-gray-900">
+              <h2 className="text-5xl md:text-7xl font-display font-black text-white">
                 Tournois <span className="text-gradient">en cours</span>
               </h2>
-              <p className="text-gray-600 text-xl max-w-2xl mx-auto font-medium">
+              <p className="text-white/70 text-xl max-w-2xl mx-auto font-medium">
                 Suis les compétitions en temps réel et découvre les meilleurs joueurs
               </p>
             </div>
@@ -180,13 +180,13 @@ export default async function HomePage() {
 
       {/* Upcoming Tournaments */}
       {upcomingTournaments.length > 0 && (
-        <section className="py-32 bg-white">
+        <section className="py-32 relative overflow-hidden">
           <div className="container mx-auto px-6">
             <div className="text-center mb-16 space-y-6">
-              <h2 className="text-5xl md:text-7xl font-display font-black text-gray-900">
+              <h2 className="text-5xl md:text-7xl font-display font-black text-white">
                 À <span className="text-gradient">venir</span>
               </h2>
-              <p className="text-gray-600 text-xl max-w-2xl mx-auto font-medium">
+              <p className="text-white/70 text-xl max-w-2xl mx-auto font-medium">
                 Prépare-toi pour les prochaines compétitions
               </p>
             </div>

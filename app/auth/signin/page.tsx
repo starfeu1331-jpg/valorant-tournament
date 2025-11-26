@@ -15,7 +15,7 @@ function SignInContent() {
     <div className="min-h-screen flex items-center justify-center relative">
       {/* Decorative bubbles */}
       <div className="fixed top-20 right-20 w-96 h-96 bg-[#5865F2]/10 rounded-full blur-3xl animate-float" />
-      <div className="fixed bottom-20 left-20 w-96 h-96 bg-primary-500/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
+      <div className="fixed bottom-20 left-20 w-96 h-96 bg-red-500/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
 
       <div className="max-w-md w-full space-y-8 p-8 md:p-12 glass-card rounded-4xl border border-white/20 relative z-10">
         <div className="text-center space-y-4">

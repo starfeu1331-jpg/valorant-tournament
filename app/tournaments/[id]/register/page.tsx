@@ -109,14 +109,14 @@ export default async function RegisterTeamPage({
               ) : registeredByStatus.rejected.length > 0 ? (
                 <>
                   <div className="text-6xl mb-4">❌</div>
-                  <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                  <h2 className="text-2xl font-bold text-white mb-2">
                     Inscription refusée
                   </h2>
-                  <p className="text-gray-600 mb-4">
+                  <p className="text-white/70 mb-4">
                     Votre inscription a été refusée par le staff.
                   </p>
-                  <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-6">
-                    <p className="text-sm text-orange-900">
+                  <div className="bg-orange-500/20 border border-orange-500/30 rounded-lg p-4 mb-6">
+                    <p className="text-sm text-orange-300">
                       <strong>💬 Besoin d'aide ?</strong> Contactez le staff Discord pour demander une seconde chance ou obtenir plus d'informations.
                     </p>
                   </div>
@@ -139,10 +139,10 @@ export default async function RegisterTeamPage({
               </Link>
             </div>
           ) : (
-            <div className="bg-white rounded-lg shadow p-6">
+            <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg shadow p-6">
               <form action={handleRegister} className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-4">
+                  <label className="block text-sm font-medium text-white mb-4">
                     Sélectionnez votre équipe
                   </label>
                   <div className="space-y-3">
