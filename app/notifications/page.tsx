@@ -111,7 +111,7 @@ export default async function NotificationsPage() {
                 <div
                   key={notification.id}
                   className={`glass-card rounded-3xl border p-4 ${
-                    !notification.read ? 'border-primary-500/50 bg-primary-500/5' : 'border-white/20'
+                    !notification.read ? 'border-red-500/50 bg-red-500/5' : 'border-white/20'
                   }`}
                 >
                   <div className="flex items-start justify-between gap-4">
@@ -122,7 +122,7 @@ export default async function NotificationsPage() {
                         </span>
                         <h3 className="font-bold text-white">{notification.title}</h3>
                         {!notification.read && (
-                          <span className="px-2 py-1 bg-primary-500/20 text-primary-300 text-xs font-bold rounded-full border border-primary-500/30">
+                          <span className="px-2 py-1 bg-red-500/20 text-red-300 text-xs font-bold rounded-full border border-red-500/30">
                             Nouveau
                           </span>
                         )}
@@ -134,7 +134,7 @@ export default async function NotificationsPage() {
                       {notification.relatedId && getNotificationLink(notification) !== '#' && (
                         <Link
                           href={getNotificationLink(notification)}
-                          className="text-primary-400 hover:text-primary-300 text-sm font-bold inline-block mt-2"
+                          className="text-red-400 hover:text-red-300 text-sm font-bold inline-block mt-2"
                         >
                           Voir →
                         </Link>

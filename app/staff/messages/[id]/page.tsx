@@ -138,15 +138,18 @@ export default async function StaffConversationPage({
       
       <div className="container mx-auto px-4 py-8 max-w-5xl relative z-10">
         {/* Header */}
-        <div className="glass-card rounded-4xl border border-white/20 mb-6 p-6">
-          <div className="flex justify-between items-start mb-4">
+        <div className="glass-card rounded-4xl border border-white/20 mb-6 p-4 md:p-6">
+          <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4 mb-4">
             <div className="flex items-center gap-4">
               <Link href="/staff/messages">
-                <Button className="bg-white/5 border border-white/20 text-white hover:bg-white/10 rounded-xl" size="sm">← Retour</Button>
+                <Button className="bg-white/5 border border-white/20 text-white hover:bg-white/10 rounded-xl flex items-center justify-center" size="sm">
+                  <span className="md:hidden">←</span>
+                  <span className="hidden md:inline">← Retour</span>
+                </Button>
               </Link>
               <div>
-                <h1 className="text-2xl font-bold text-white">{conversation.subject}</h1>
-                <p className="text-white/70 mt-1">
+                <h1 className="text-xl md:text-2xl font-bold text-white break-words">{conversation.subject}</h1>
+                <p className="text-sm text-white/70 mt-1">
                   Conversation avec{' '}
                   <Link href={`/joueurs/${conversation.user.id}`} className="font-medium text-blue-400 hover:text-blue-300 transition-colors">
                     {conversation.user.username}
@@ -164,9 +167,9 @@ export default async function StaffConversationPage({
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-shrink-0">
               <span
-                className={`px-3 py-1 rounded-full font-medium text-sm border ${
+                className={`px-3 py-1 rounded-full font-medium text-xs md:text-sm border whitespace-nowrap ${
                   conversation.status === 'OPEN'
                     ? 'bg-green-500/20 text-green-300 border-green-500/30'
                     : 'bg-white/10 text-white/60 border-white/20'
@@ -181,13 +184,13 @@ export default async function StaffConversationPage({
                   name="newStatus"
                   value={conversation.status === 'OPEN' ? 'CLOSED' : 'OPEN'}
                 />
-                <Button type="submit" className="bg-white/5 border border-white/20 text-white hover:bg-white/10 rounded-xl" size="sm">
+                <Button type="submit" className="bg-white/5 border border-white/20 text-white hover:bg-white/10 rounded-xl whitespace-nowrap" size="sm">
                   {conversation.status === 'OPEN' ? 'Fermer' : 'Rouvrir'}
                 </Button>
               </form>
             </div>
           </div>
-          <div className="text-sm text-white/40">
+          <div className="text-xs md:text-sm text-white/40">
             Créée le {new Date(conversation.createdAt).toLocaleDateString('fr-FR')} à{' '}
             {new Date(conversation.createdAt).toLocaleTimeString('fr-FR', {
               hour: '2-digit',

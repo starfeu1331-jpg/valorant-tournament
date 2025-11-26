@@ -31,7 +31,7 @@ export default function RootLayout({
       <body className={`${inter.variable} ${poppins.variable} font-sans`}>
         <AuthProvider>
           <Header />
-          <main className="min-h-screen pt-28 relative">
+          <main className="min-h-screen pt-20 md:pt-28 relative">
             {/* Background image globale pour toutes les pages */}
             <div className="fixed inset-0 -z-10">
               <img 

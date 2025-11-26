@@ -41,7 +41,7 @@ export default async function StaffDashboard() {
   return (
     <div className="min-h-screen">
       {/* Bulles décoratives */}
-      <div className="fixed top-20 left-20 w-96 h-96 bg-primary-500/10 rounded-full filter blur-3xl pointer-events-none animate-float" />
+      <div className="fixed top-20 left-20 w-96 h-96 bg-red-500/10 rounded-full filter blur-3xl pointer-events-none animate-float" />
       <div className="fixed bottom-20 right-20 w-96 h-96 bg-purple-500/10 rounded-full filter blur-3xl pointer-events-none animate-float" style={{animationDelay: '1.5s'}} />
       
       {/* Header */}
@@ -54,7 +54,7 @@ export default async function StaffDashboard() {
             </div>
             <div className="flex gap-4">
               <Link href="/staff/tournaments/create">
-                <Button size="lg" className="bg-gradient-to-r from-primary-500 to-primary-600">Créer un tournoi</Button>
+                <Button size="lg" className="bg-gradient-to-r from-red-500 to-red-600">Créer un tournoi</Button>
               </Link>
               <Link href="/">
                 <Button variant="outline" className="bg-white/5 border-white/20 text-white hover:bg-white/10">Retour au site</Button>
@@ -118,7 +118,7 @@ export default async function StaffDashboard() {
             <div className="p-12 text-center">
               <p className="text-white/70 mb-4">Aucun tournoi créé</p>
               <Link href="/staff/tournaments/create">
-                <Button className="bg-gradient-to-r from-primary-500 to-primary-600">Créer mon premier tournoi</Button>
+                <Button className="bg-gradient-to-r from-red-500 to-red-600">Créer mon premier tournoi</Button>
               </Link>
             </div>
           ) : (
@@ -144,7 +144,7 @@ export default async function StaffDashboard() {
                               tournament.status === 'ONGOING'
                                 ? 'text-yellow-400'
                                 : tournament.status === 'COMPLETED'
-                                ? 'text-gray-400'
+                                ? 'text-white/70'
                                 : 'text-blue-400'
                             }`}
                           >
@@ -155,7 +155,10 @@ export default async function StaffDashboard() {
                     </div>
                     
                     <Link href={`/staff/tournaments/${tournament.id}`}>
-                      <Button variant="outline" className="bg-white/5 border-white/20 text-white hover:bg-white/10">Gérer</Button>
+                      <Button variant="outline" className="bg-white/5 border-white/20 text-white hover:bg-white/10">
+                        <span className="md:hidden">⚙️</span>
+                        <span className="hidden md:inline">Gérer</span>
+                      </Button>
                     </Link>
                   </div>
                 </div>

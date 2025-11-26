@@ -69,23 +69,23 @@ export default async function RegisterTeamPage({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-2xl mx-auto">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900">Inscrire une équipe</h1>
-            <p className="text-gray-600 mt-1">
+            <h1 className="text-3xl font-bold text-white">Inscrire une équipe</h1>
+            <p className="text-white/70 mt-1">
               Tournoi : <strong>{tournament.name}</strong>
             </p>
           </div>
 
           {availableTeams.length === 0 && eligibleTeams.length === 0 ? (
-            <div className="bg-white rounded-lg shadow p-8 text-center">
+            <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-8 text-center">
               <div className="text-6xl mb-4">🎮</div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">
+              <h2 className="text-2xl font-bold text-white mb-2">
                 Aucune équipe {tournament.game}
               </h2>
-              <p className="text-gray-600 mb-6">
+              <p className="text-white/70 mb-6">
                 Vous devez créer une équipe {tournament.game} pour vous inscrire à ce tournoi
               </p>
               <Link href="/teams/create">
@@ -95,14 +95,14 @@ export default async function RegisterTeamPage({
               </Link>
             </div>
           ) : availableTeams.length === 0 ? (
-            <div className="bg-white rounded-lg shadow p-8 text-center">
+            <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-8 text-center">
               {registeredByStatus.pending.length > 0 ? (
                 <>
                   <div className="text-6xl mb-4">⏳</div>
-                  <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                    Inscription en attente de validation
+                  <h2 className="text-2xl font-bold text-white mb-2">
+                    Inscription en attente
                   </h2>
-                  <p className="text-gray-600 mb-6">
+                  <p className="text-white/70 mb-6">
                     Votre équipe est en cours de validation par les bénévoles. Vous serez notifié dès que votre inscription sera approuvée.
                   </p>
                 </>
@@ -124,10 +124,10 @@ export default async function RegisterTeamPage({
               ) : (
                 <>
                   <div className="text-6xl mb-4">✅</div>
-                  <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                    Toutes vos équipes sont déjà inscrites
+                  <h2 className="text-2xl font-bold text-white mb-2">
+                    Toutes vos équipes sont inscrites
                   </h2>
-                  <p className="text-gray-600 mb-6">
+                  <p className="text-white/70 mb-4">
                     Vous avez déjà inscrit toutes vos équipes {tournament.game} à ce tournoi
                   </p>
                 </>
@@ -149,7 +149,7 @@ export default async function RegisterTeamPage({
                     {availableTeams.map((team: any) => (
                       <label
                         key={team.id}
-                        className="flex items-start p-4 border border-gray-300 rounded-lg cursor-pointer hover:border-primary-500 hover:bg-primary-50 transition-colors"
+                        className="flex items-start p-4 bg-white/5 border border-white/10 rounded-lg cursor-pointer hover:border-red-500/50 hover:bg-white/10 transition-colors"
                       >
                         <input
                           type="radio"
@@ -160,10 +160,10 @@ export default async function RegisterTeamPage({
                         />
                         <div className="flex-1">
                           <div className="flex items-center justify-between">
-                            <h3 className="text-lg font-bold text-gray-900">{team.name}</h3>
-                            <span className="text-primary-600 font-medium">{team.tag}</span>
+                            <h3 className="text-lg font-bold text-white">{team.name}</h3>
+                            <span className="text-red-400 font-medium">{team.tag}</span>
                           </div>
-                          <p className="text-sm text-gray-600 mt-1">
+                          <p className="text-sm text-white/70 mt-1">
                             {team.players.length} joueurs • {team._count.tournamentTeams} tournois
                           </p>
                           {team.ownerId === session.user.id && (

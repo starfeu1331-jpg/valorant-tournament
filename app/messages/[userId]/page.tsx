@@ -100,14 +100,18 @@ export default async function ConversationPage({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen py-8">
+      {/* Bulles décoratives */}
+      <div className="fixed top-20 left-20 w-96 h-96 bg-purple-500/10 rounded-full filter blur-3xl pointer-events-none animate-float" />
+      <div className="fixed bottom-20 right-20 w-96 h-96 bg-pink-500/10 rounded-full filter blur-3xl pointer-events-none animate-float" style={{animationDelay: '2s'}} />
+      
       {/* Header fixe */}
-      <div className="bg-white border-b sticky top-0 z-10">
+      <div className="glass-card border-b border-white/10 sticky top-0 z-10 backdrop-blur-xl">
         <div className="container mx-auto px-4 py-4 max-w-4xl">
           <div className="flex items-center gap-4">
             <Link
               href="/messages"
-              className="text-gray-600 hover:text-gray-900 transition-colors"
+              className="text-white/70 hover:text-white transition-colors"
             >
               ← Retour
             </Link>
@@ -115,13 +119,13 @@ export default async function ConversationPage({
               <img
                 src={otherUser.image || `https://api.dicebear.com/7.x/avataaars/svg?seed=${otherUser.username}`}
                 alt={otherUser.username}
-                className="w-10 h-10 rounded-full"
+                className="w-10 h-10 rounded-full border-2 border-white/20"
               />
               <div>
-                <h1 className="font-semibold text-gray-900">
+                <h1 className="font-semibold text-white">
                   {otherUser.username}
                 </h1>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-white/60">
                   {otherUser.role === 'ADMIN' ? '👑 Admin' : 
                    otherUser.role === 'STAFF' ? '⭐ Staff' : 
                    '🎮 Joueur'}
@@ -133,11 +137,11 @@ export default async function ConversationPage({
       </div>
 
       {/* Messages */}
-      <div className="container mx-auto px-4 py-6 max-w-4xl">
-        <div className="bg-white rounded-lg shadow-md mb-4">
+      <div className="container mx-auto px-4 py-6 max-w-4xl relative z-10">
+        <div className="glass-card rounded-4xl border border-white/20 mb-4">
           <div className="p-6 space-y-6 min-h-[400px] max-h-[600px] overflow-y-auto">
             {messages.length === 0 ? (
-              <div className="text-center text-gray-500 py-12">
+              <div className="text-center text-white/70 py-12">
                 <p>Aucun message dans cette conversation</p>
                 <p className="text-sm mt-2">Envoyez le premier message !</p>
               </div>
@@ -152,23 +156,23 @@ export default async function ConversationPage({
                     <div className={`max-w-[70%] ${isOwn ? 'order-2' : 'order-1'}`}>
                       {message.subject && (
                         <p className={`text-sm font-semibold mb-1 ${
-                          isOwn ? 'text-right text-primary-700' : 'text-gray-700'
+                          isOwn ? 'text-right text-red-400' : 'text-white'
                         }`}>
                           {message.subject}
                         </p>
                       )}
                       <div
-                        className={`rounded-lg px-4 py-3 ${
+                        className={`rounded-2xl px-4 py-3 ${
                           isOwn
-                            ? 'bg-primary-600 text-white'
-                            : 'bg-gray-100 text-gray-900'
+                            ? 'bg-red-500/20 text-white border border-red-500/30'
+                            : 'bg-white/10 text-white border border-white/20'
                         }`}
                       >
                         <p className="text-sm whitespace-pre-wrap break-words">
                           {message.content}
                         </p>
                       </div>
-                      <p className={`text-xs text-gray-500 mt-1 ${
+                      <p className={`text-xs text-white/60 mt-1 ${
                         isOwn ? 'text-right' : 'text-left'
                       }`}>
                         {formatDate(message.createdAt)}

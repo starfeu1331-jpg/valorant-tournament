@@ -49,81 +49,86 @@ export default async function PublicPlayerDetailPage({
   const isStaff = session?.user?.role === 'STAFF' || session?.user?.role === 'ADMIN'
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           {/* Profil */}
-          <div className="bg-white rounded-lg shadow p-6 mb-6">
-            <div className="flex items-start justify-between">
-              <div className="flex items-center gap-6">
+          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-4 md:p-6 mb-6">
+            <div className="flex flex-col md:flex-row items-start justify-between gap-4">
+              <div className="flex items-center gap-4 md:gap-6 min-w-0">
                 {user.image && (
                   <img
                     src={user.image}
                     alt={user.username}
-                    className="w-24 h-24 rounded-full"
+                    className="w-20 h-20 md:w-24 md:h-24 rounded-full flex-shrink-0"
                   />
                 )}
-                <div>
-                  <h1 className="text-3xl font-bold text-gray-900 mb-2">{user.username}</h1>
+                <div className="min-w-0">
+                  <h1 className="text-2xl md:text-3xl font-bold text-white mb-2 break-words">{user.username}</h1>
                   <span
                     className={`px-3 py-1 rounded-full text-sm font-medium ${
                       user.role === 'ADMIN'
-                        ? 'bg-red-100 text-red-800'
+                        ? 'bg-red-500/20 text-red-300 border border-red-500/30'
                         : user.role === 'STAFF'
-                        ? 'bg-yellow-100 text-yellow-800'
-                        : 'bg-gray-100 text-gray-700'
+                        ? 'bg-yellow-500/20 text-yellow-300 border border-yellow-500/30'
+                        : 'bg-white/10 text-white/70 border border-white/20'
                     }`}
                   >
                     {user.role === 'ADMIN' ? '👑 Admin' : user.role === 'STAFF' ? '⚙️ Staff' : '🎮 Joueur'}
                   </span>
-                  <p className="text-sm text-gray-600 mt-2">
+                  <p className="text-sm text-white/50 mt-2">
                     Inscrit le {new Date(user.createdAt).toLocaleDateString('fr-FR')}
                   </p>
                 </div>
               </div>
-              <div className="flex gap-2">
+              <div className="flex gap-2 flex-shrink-0 w-full md:w-auto">
                 {isStaff && (
                   <>
-                    <Link href={`/messages/${user.id}`}>
-                      <Button className="bg-primary-600 hover:bg-primary-700">
-                        💬 Contacter
+                    <Link href={`/messages/${user.id}`} className="flex-1 md:flex-initial">
+                      <Button className="bg-red-500/20 hover:bg-red-500/30 text-red-300 border border-red-500/30 w-full md:w-auto">
+                        <span className="md:hidden">💬</span>
+                        <span className="hidden md:inline">💬 Contacter</span>
                       </Button>
                     </Link>
-                    <Link href={`/staff/joueurs/${user.id}`}>
-                      <Button variant="outline" className="bg-yellow-50 border-yellow-300 text-yellow-700 hover:bg-yellow-100">
-                        ⚙️ Gérer
+                    <Link href={`/staff/joueurs/${user.id}`} className="flex-1 md:flex-initial">
+                      <Button variant="outline" className="bg-yellow-50 border-yellow-300 text-yellow-700 hover:bg-yellow-100 w-full md:w-auto">
+                        <span className="md:hidden">⚙️</span>
+                        <span className="hidden md:inline">⚙️ Gérer</span>
                       </Button>
                     </Link>
                   </>
                 )}
-                <Link href="/joueurs">
-                  <Button variant="outline">Retour</Button>
+                <Link href="/joueurs" className="flex-1 md:flex-initial">
+                  <Button variant="outline" className="w-full md:w-auto">
+                    <span className="md:hidden">←</span>
+                    <span className="hidden md:inline">Retour</span>
+                  </Button>
                 </Link>
               </div>
             </div>
           </div>
 
           {/* Équipes possédées */}
-          <div className="bg-white rounded-lg shadow p-6 mb-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">
+          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-4 md:p-6 mb-6">
+            <h2 className="text-xl font-bold text-white mb-4">
               Équipes créées ({user.ownedTeams.length})
             </h2>
             {user.ownedTeams.length === 0 ? (
-              <p className="text-gray-500 text-center py-4">Aucune équipe créée</p>
+              <p className="text-white/50 text-center py-4">Aucune équipe créée</p>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {user.ownedTeams.map((team: any) => (
                   <Link
                     key={team.id}
                     href={`/equipes/${team.id}`}
-                    className="p-4 border border-gray-200 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors"
+                    className="p-4 bg-white/5 border border-white/10 rounded-lg hover:border-red-500/50 hover:bg-white/10 transition-colors"
                   >
                     <div className="flex items-start justify-between mb-2">
-                      <h3 className="font-bold text-gray-900">{team.name}</h3>
-                      <span className="text-primary-600 font-medium text-sm">{team.tag}</span>
+                      <h3 className="font-bold text-white break-words">{team.name}</h3>
+                      <span className="text-red-400 font-medium text-sm whitespace-nowrap ml-2">{team.tag}</span>
                     </div>
-                    <p className="text-sm text-gray-600 mb-2">{team.game}</p>
-                    <div className="flex gap-4 text-xs text-gray-500">
+                    <p className="text-sm text-white/50 mb-2">{team.game}</p>
+                    <div className="flex gap-4 text-xs text-white/50">
                       <span>👥 {team._count.players}</span>
                       <span>🏆 {team._count.tournamentTeams}</span>
                     </div>
@@ -134,35 +139,35 @@ export default async function PublicPlayerDetailPage({
           </div>
 
           {/* Équipes rejointes */}
-          <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">
+          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-4 md:p-6">
+            <h2 className="text-xl font-bold text-white mb-4">
               Équipes rejointes ({user.teamPlayers.length})
             </h2>
             {user.teamPlayers.length === 0 ? (
-              <p className="text-gray-500 text-center py-4">Aucune équipe rejointe</p>
+              <p className="text-white/50 text-center py-4">Aucune équipe rejointe</p>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {user.teamPlayers.map((tp: any) => (
                   <Link
                     key={tp.id}
                     href={`/equipes/${tp.team.id}`}
-                    className="p-4 border border-gray-200 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors"
+                    className="p-4 bg-white/5 border border-white/10 rounded-lg hover:border-red-500/50 hover:bg-white/10 transition-colors"
                   >
                     <div className="flex items-start justify-between mb-2">
-                      <h3 className="font-bold text-gray-900">{tp.team.name}</h3>
-                      <span className="text-primary-600 font-medium text-sm">{tp.team.tag}</span>
+                      <h3 className="font-bold text-white break-words">{tp.team.name}</h3>
+                      <span className="text-red-400 font-medium text-sm whitespace-nowrap ml-2">{tp.team.tag}</span>
                     </div>
-                    <p className="text-sm text-gray-600 mb-2">{tp.team.game}</p>
+                    <p className="text-sm text-white/50 mb-2">{tp.team.game}</p>
                     <div className="flex items-center justify-between">
-                      <div className="flex gap-4 text-xs text-gray-500">
+                      <div className="flex gap-4 text-xs text-white/50">
                         <span>👥 {tp.team._count.players}</span>
                         <span>🏆 {tp.team._count.tournamentTeams}</span>
                       </div>
                       <span
                         className={`px-2 py-1 rounded-full text-xs font-medium ${
                           tp.role === 'CAPTAIN'
-                            ? 'bg-yellow-100 text-yellow-800'
-                            : 'bg-gray-100 text-gray-700'
+                            ? 'bg-yellow-500/20 text-yellow-300 border border-yellow-500/30'
+                            : 'bg-white/10 text-white/70 border border-white/20'
                         }`}
                       >
                         {tp.role === 'CAPTAIN' ? '👑' : '🎮'}

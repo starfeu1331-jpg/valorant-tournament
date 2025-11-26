@@ -60,16 +60,16 @@ export default async function StaffTeamManagePage({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-8">
+    <div className="min-h-screen py-8">
+      <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-lg shadow p-6 mb-6">
+          <div className="glass-card rounded-4xl border border-white/20 p-6 mb-6">
             <div className="flex items-start justify-between mb-6">
               <div>
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                <h1 className="text-3xl font-bold text-white mb-2">
                   Gestion de l'équipe
                 </h1>
-                <p className="text-gray-600">
+                <p className="text-white/70">
                   {team.name} • {team.tag}
                 </p>
               </div>
@@ -84,35 +84,35 @@ export default async function StaffTeamManagePage({
             </div>
 
             {/* Infos équipe */}
-            <div className="space-y-4 mb-6 p-4 bg-gray-50 rounded-lg">
+            <div className="space-y-4 mb-6 p-4 bg-white/5 rounded-2xl border border-white/10">
               <div>
-                <span className="text-sm font-medium text-gray-600">Propriétaire:</span>
-                <p className="text-gray-900">{team.owner.username}</p>
+                <span className="text-sm font-medium text-white/60">Propriétaire:</span>
+                <p className="text-white">{team.owner.username}</p>
               </div>
               <div>
-                <span className="text-sm font-medium text-gray-600">Discord ID:</span>
-                <p className="text-gray-900">{team.owner.discordId}</p>
+                <span className="text-sm font-medium text-white/60">Discord ID:</span>
+                <p className="text-white">{team.owner.discordId}</p>
               </div>
               <div>
-                <span className="text-sm font-medium text-gray-600">Email:</span>
-                <p className="text-gray-900">{team.owner.email || 'Non renseigné'}</p>
+                <span className="text-sm font-medium text-white/60">Email:</span>
+                <p className="text-white">{team.owner.email || 'Non renseigné'}</p>
               </div>
               <div>
-                <span className="text-sm font-medium text-gray-600">Créée le:</span>
-                <p className="text-gray-900">{new Date(team.createdAt).toLocaleString('fr-FR')}</p>
+                <span className="text-sm font-medium text-white/60">Créée le:</span>
+                <p className="text-white">{new Date(team.createdAt).toLocaleString('fr-FR')}</p>
               </div>
             </div>
 
             {/* Roster avec actions */}
             <div className="mb-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-4">
+              <h2 className="text-xl font-bold text-white mb-4">
                 Roster ({team.players.length})
               </h2>
               <div className="space-y-2">
                 {team.players.map((player: any) => (
                   <div
                     key={player.id}
-                    className="flex items-center justify-between p-3 border border-gray-200 rounded-lg"
+                    className="flex items-center justify-between p-3 bg-white/5 border border-white/10 rounded-lg"
                   >
                     <div className="flex items-center gap-3">
                       {player.user.image && (
@@ -123,16 +123,16 @@ export default async function StaffTeamManagePage({
                         />
                       )}
                       <div>
-                        <p className="font-medium text-gray-900">{player.user.username}</p>
-                        <p className="text-xs text-gray-500">{player.user.discordId}</p>
+                        <p className="font-medium text-white">{player.user.username}</p>
+                        <p className="text-xs text-white/50">{player.user.discordId}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
                       <span
                         className={`px-2 py-1 rounded text-xs font-medium ${
                           player.role === 'CAPTAIN'
-                            ? 'bg-yellow-100 text-yellow-800'
-                            : 'bg-gray-100 text-gray-700'
+                            ? 'bg-yellow-500/20 text-yellow-300 border border-yellow-500/30'
+                            : 'bg-white/10 text-white/70 border border-white/20'
                         }`}
                       >
                         {player.role === 'CAPTAIN' ? '👑 Capitaine' : 'Joueur'}
@@ -151,21 +151,21 @@ export default async function StaffTeamManagePage({
 
             {/* Tournois */}
             <div className="mb-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-4">
+              <h2 className="text-xl font-bold text-white mb-4">
                 Tournois inscrits ({team.tournamentTeams.length})
               </h2>
               {team.tournamentTeams.length === 0 ? (
-                <p className="text-gray-500 text-center py-4">Aucun tournoi</p>
+                <p className="text-white/50 text-center py-4">Aucun tournoi</p>
               ) : (
                 <div className="space-y-2">
                   {team.tournamentTeams.map((tt: any) => (
                     <div
                       key={tt.id}
-                      className="flex items-center justify-between p-3 border border-gray-200 rounded-lg"
+                      className="flex items-center justify-between p-3 bg-white/5 border border-white/10 rounded-lg"
                     >
                       <div>
-                        <p className="font-medium text-gray-900">{tt.tournament.name}</p>
-                        <p className="text-sm text-gray-600">
+                        <p className="font-medium text-white">{tt.tournament.name}</p>
+                        <p className="text-sm text-white/70">
                           {new Date(tt.tournament.startDate).toLocaleDateString('fr-FR')}
                         </p>
                       </div>

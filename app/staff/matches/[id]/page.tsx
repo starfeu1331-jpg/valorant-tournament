@@ -337,7 +337,7 @@ export default async function ManageMatchPage({
       {/* Header */}
       <div className="relative z-10 border-b border-white/10 bg-black/30 backdrop-blur-md">
         <div className="container mx-auto px-4 py-6">
-          <Link href={`/staff/tournaments/${match.tournamentId}`} className="text-primary-400 hover:text-primary-300 mb-2 inline-block">
+          <Link href={`/staff/tournaments/${match.tournamentId}`} className="text-red-400 hover:text-red-300 mb-2 inline-block">
             ← Retour au tournoi
           </Link>
           <h1 className="text-3xl font-bold text-white">

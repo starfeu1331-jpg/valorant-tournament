@@ -13,20 +13,24 @@ export default async function CreateTeamPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-8">
+    <div className="min-h-screen py-8">
+      {/* Bulles décoratives */}
+      <div className="fixed top-20 right-20 w-96 h-96 bg-emerald-500/10 rounded-full filter blur-3xl pointer-events-none animate-float" />
+      <div className="fixed bottom-20 left-20 w-96 h-96 bg-blue-500/10 rounded-full filter blur-3xl pointer-events-none animate-float" style={{animationDelay: '1.5s'}} />
+      
+      <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-2xl mx-auto">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900">Créer une équipe</h1>
-            <p className="text-gray-600 mt-1">
+            <h1 className="text-3xl font-bold text-white">Créer une équipe</h1>
+            <p className="text-white/70 mt-1">
               Créez votre équipe pour participer aux tournois e-sport
             </p>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="glass-card rounded-4xl border border-white/20 p-6">
             <form action={createTeam} className="space-y-6">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-900 mb-2">
+                <label htmlFor="name" className="block text-sm font-medium text-white mb-2">
                   Nom de l'équipe *
                 </label>
                 <input
@@ -35,12 +39,12 @@ export default async function CreateTeamPage() {
                   name="name"
                   required
                   placeholder="Ex: Les Champions"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                  className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-2xl text-white placeholder:text-white/50 focus:ring-2 focus:ring-red-500 focus:border-red-500 backdrop-blur-sm"
                 />
               </div>
 
               <div>
-                <label htmlFor="tag" className="block text-sm font-medium text-gray-900 mb-2">
+                <label htmlFor="tag" className="block text-sm font-medium text-white mb-2">
                   Tag (sigle) *
                 </label>
                 <input
@@ -50,34 +54,34 @@ export default async function CreateTeamPage() {
                   required
                   maxLength={10}
                   placeholder="Ex: CHAMP"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                  className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-2xl text-white placeholder:text-white/50 focus:ring-2 focus:ring-red-500 focus:border-red-500 backdrop-blur-sm"
                 />
-                <p className="text-sm text-gray-500 mt-1">Maximum 10 caractères</p>
+                <p className="text-sm text-white/60 mt-1">Maximum 10 caractères</p>
               </div>
 
               <div>
-                <label htmlFor="game" className="block text-sm font-medium text-gray-900 mb-2">
+                <label htmlFor="game" className="block text-sm font-medium text-white mb-2">
                   Jeu principal *
                 </label>
                 <select
                   id="game"
                   name="game"
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                  className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-2xl text-white focus:ring-2 focus:ring-red-500 focus:border-red-500 backdrop-blur-sm"
                 >
-                  <option value="">Sélectionnez un jeu</option>
-                  <option value="Valorant">Valorant</option>
-                  <option value="League of Legends">League of Legends</option>
-                  <option value="CS2">Counter-Strike 2</option>
-                  <option value="Fortnite">Fortnite</option>
-                  <option value="Rocket League">Rocket League</option>
-                  <option value="Overwatch 2">Overwatch 2</option>
-                  <option value="Autre">Autre</option>
+                  <option value="" className="bg-gray-900">Sélectionnez un jeu</option>
+                  <option value="Valorant" className="bg-gray-900">Valorant</option>
+                  <option value="League of Legends" className="bg-gray-900">League of Legends</option>
+                  <option value="CS2" className="bg-gray-900">Counter-Strike 2</option>
+                  <option value="Fortnite" className="bg-gray-900">Fortnite</option>
+                  <option value="Rocket League" className="bg-gray-900">Rocket League</option>
+                  <option value="Overwatch 2" className="bg-gray-900">Overwatch 2</option>
+                  <option value="Autre" className="bg-gray-900">Autre</option>
                 </select>
               </div>
 
               <div>
-                <label htmlFor="description" className="block text-sm font-medium text-gray-900 mb-2">
+                <label htmlFor="description" className="block text-sm font-medium text-white mb-2">
                   Description (optionnel)
                 </label>
                 <textarea
@@ -85,12 +89,12 @@ export default async function CreateTeamPage() {
                   name="description"
                   rows={4}
                   placeholder="Décrivez votre équipe, vos objectifs, votre niveau..."
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                  className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-2xl text-white placeholder:text-white/50 focus:ring-2 focus:ring-red-500 focus:border-red-500 backdrop-blur-sm"
                 />
               </div>
 
-              <div className="bg-blue-50 border border-blue-200 rounded-md p-4">
-                <p className="text-sm text-blue-900">
+              <div className="bg-blue-500/10 border border-blue-500/30 rounded-2xl p-4">
+                <p className="text-sm text-blue-200">
                   <strong>Note :</strong> Vous serez automatiquement désigné comme capitaine de l'équipe.
                   Vous pourrez ensuite inviter d'autres joueurs.
                 </p>

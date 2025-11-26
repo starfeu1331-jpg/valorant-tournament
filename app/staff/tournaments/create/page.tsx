@@ -213,7 +213,7 @@ export default function CreateTournamentPage() {
                 id="pickBanEnabled"
                 name="pickBanEnabled"
                 value="true"
-                className="w-5 h-5 text-primary-600 bg-white/10 border-white/20 rounded focus:ring-primary-600"
+                className="w-5 h-5 text-red-500 bg-white/10 border-white/20 rounded focus:ring-red-500"
               />
               <label htmlFor="pickBanEnabled" className="text-sm font-medium text-white/80">
                 Activer le système Pick & Ban pour les matches

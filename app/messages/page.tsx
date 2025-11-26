@@ -213,7 +213,7 @@ export default async function MessagesPage() {
                       </p>
 
                       {conv.unreadCount > 0 && (
-                        <span className="inline-block mt-2 px-2 py-0.5 bg-primary-500/20 text-primary-300 text-xs font-bold rounded-full border border-primary-500/30">
+                        <span className="inline-block mt-2 px-2 py-0.5 bg-red-500/20 text-red-300 text-xs font-bold rounded-full border border-red-500/30">
                           {conv.unreadCount} nouveau{conv.unreadCount > 1 ? 'x' : ''}
                         </span>
                       )}

@@ -65,7 +65,7 @@ export default async function InvitationsPage() {
                         {invitation.team.name}
                       </h3>
                       <p className="text-white/80">
-                        <span className="font-bold text-primary-400">{invitation.team.tag}</span> • {invitation.team.game}
+                        <span className="font-bold text-red-400">{invitation.team.tag}</span> • {invitation.team.game}
                       </p>
                       <p className="text-sm text-white/60 mt-2">
                         Invité par <strong className="text-white">{invitation.invitedBy.username}</strong> le {new Date(invitation.createdAt).toLocaleDateString('fr-FR')}

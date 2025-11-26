@@ -46,7 +46,7 @@ export default async function TournamentDetailPage({
             </div>
             {canRegister && !userTeamRegistration && (
               <Link href={`/tournaments/${tournament.id}/register`}>
-                <Button size="lg" className="bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700">
+                <Button size="lg" className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700">
                   Inscrire mon équipe
                 </Button>
               </Link>
@@ -181,7 +181,7 @@ export default async function TournamentDetailPage({
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {acceptedTeams.map(tt => (
-                <div key={tt.id} className="bg-white/5 border border-white/10 rounded-2xl p-4 hover:border-primary-500/50 hover:bg-white/10 transition-all">
+                <div key={tt.id} className="bg-white/5 border border-white/10 rounded-2xl p-4 hover:border-red-500/50 hover:bg-white/10 transition-all">
                   <div className="flex items-center gap-4">
                     {tt.team.logo && (
                       <img

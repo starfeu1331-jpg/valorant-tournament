@@ -15,7 +15,7 @@ export default async function TournamentsPage({
   return (
     <div className="min-h-screen py-12">
       {/* Bulles décoratives */}
-      <div className="fixed top-20 right-20 w-96 h-96 bg-primary-500/10 rounded-full filter blur-3xl pointer-events-none animate-float" />
+      <div className="fixed top-20 right-20 w-96 h-96 bg-red-500/10 rounded-full filter blur-3xl pointer-events-none animate-float" />
       <div className="fixed bottom-20 left-20 w-96 h-96 bg-purple-500/10 rounded-full filter blur-3xl pointer-events-none animate-float" style={{animationDelay: '2s'}} />
       
       <div className="container mx-auto px-4 relative z-10">
@@ -33,7 +33,7 @@ export default async function TournamentsPage({
               href="/tournaments"
               className={`px-6 py-3 rounded-2xl font-bold transition-all ${
                 !searchParams.status
-                  ? 'bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg'
+                  ? 'bg-gradient-to-r from-red-500 to-red-600 text-white shadow-lg'
                   : 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm'
               }`}
             >
@@ -43,7 +43,7 @@ export default async function TournamentsPage({
               href="/tournaments?status=registration_open"
               className={`px-6 py-3 rounded-2xl font-bold transition-all ${
                 searchParams.status === 'registration_open'
-                  ? 'bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg'
+                  ? 'bg-gradient-to-r from-red-500 to-red-600 text-white shadow-lg'
                   : 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm'
               }`}
             >
@@ -53,7 +53,7 @@ export default async function TournamentsPage({
               href="/tournaments?status=ongoing"
               className={`px-6 py-3 rounded-2xl font-bold transition-all ${
                 searchParams.status === 'ongoing'
-                  ? 'bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg'
+                  ? 'bg-gradient-to-r from-red-500 to-red-600 text-white shadow-lg'
                   : 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm'
               }`}
             >
@@ -63,7 +63,7 @@ export default async function TournamentsPage({
               href="/tournaments?status=completed"
               className={`px-6 py-3 rounded-2xl font-bold transition-all ${
                 searchParams.status === 'completed'
-                  ? 'bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg'
+                  ? 'bg-gradient-to-r from-red-500 to-red-600 text-white shadow-lg'
                   : 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm'
               }`}
             >

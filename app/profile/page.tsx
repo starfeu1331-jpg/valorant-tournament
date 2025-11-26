@@ -41,7 +41,7 @@ export default async function ProfilePage() {
   return (
     <div className="min-h-screen py-8">
       {/* Bulles décoratives */}
-      <div className="fixed top-20 right-20 w-96 h-96 bg-primary-500/10 rounded-full filter blur-3xl pointer-events-none animate-float" />
+      <div className="fixed top-20 right-20 w-96 h-96 bg-red-500/10 rounded-full filter blur-3xl pointer-events-none animate-float" />
       <div className="fixed bottom-20 left-20 w-96 h-96 bg-purple-500/10 rounded-full filter blur-3xl pointer-events-none animate-float" style={{animationDelay: '1.5s'}} />
       
       <div className="container mx-auto px-4 relative z-10">
@@ -118,10 +118,10 @@ export default async function ProfilePage() {
                         name="riotId"
                         placeholder="VotreNom#TAG"
                         defaultValue={user.riotId}
-                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-2xl text-white placeholder:text-white/50 focus:ring-2 focus:ring-primary-500 backdrop-blur-sm"
+                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-2xl text-white placeholder:text-white/50 focus:ring-2 focus:ring-red-500 backdrop-blur-sm"
                       />
                     </div>
-                    <Button type="submit" className="w-full bg-gradient-to-r from-primary-500 to-primary-600">
+                    <Button type="submit" className="w-full bg-gradient-to-r from-red-500 to-red-600">
                       Mettre à jour
                     </Button>
                   </form>
@@ -145,14 +145,14 @@ export default async function ProfilePage() {
                       name="riotId"
                       required
                       placeholder="VotreNom#TAG"
-                      className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-2xl text-white placeholder:text-white/50 focus:ring-2 focus:ring-primary-500 backdrop-blur-sm"
+                      className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-2xl text-white placeholder:text-white/50 focus:ring-2 focus:ring-red-500 backdrop-blur-sm"
                     />
                     <p className="text-xs text-white/60 mt-1">
                       Exemple: PlayerOne#EU1
                     </p>
                   </div>
 
-                  <Button type="submit" className="w-full bg-gradient-to-r from-primary-500 to-primary-600" size="lg">
+                  <Button type="submit" className="w-full bg-gradient-to-r from-red-500 to-red-600" size="lg">
                     Vérifier et enregistrer
                     </Button>
                 </form>

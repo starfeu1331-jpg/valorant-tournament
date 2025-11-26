@@ -28,7 +28,7 @@ export default async function TeamsPage() {
               <p className="text-white/80 text-lg">Gérez vos équipes et inscrivez-vous aux tournois</p>
             </div>
             <Link href="/teams/create">
-              <Button size="lg" className="bg-gradient-to-r from-primary-500 to-primary-600 hover:shadow-lg">Créer une équipe</Button>
+              <Button size="lg" className="bg-gradient-to-r from-red-500 to-red-600 hover:shadow-lg">Créer une équipe</Button>
             </Link>
           </div>
         </div>
@@ -41,18 +41,18 @@ export default async function TeamsPage() {
               Créez votre première équipe pour participer aux tournois
             </p>
             <Link href="/teams/create">
-              <Button size="lg" className="bg-gradient-to-r from-primary-500 to-primary-600">Créer une équipe</Button>
+              <Button size="lg" className="bg-gradient-to-r from-red-500 to-red-600">Créer une équipe</Button>
             </Link>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {teams.map((team) => (
-              <div key={team.id} className="glass-card rounded-3xl border border-white/20 hover:border-primary-500/50 transition-all card-hover">
+              <div key={team.id} className="glass-card rounded-3xl border border-white/20 hover:border-red-500/50 transition-all card-hover">
                 <div className="p-6">
                   <div className="flex items-start justify-between mb-4">
                     <div>
                       <h3 className="text-xl font-bold text-white">{team.name}</h3>
-                      <p className="text-primary-400 font-bold">{team.tag}</p>
+                      <p className="text-red-400 font-bold">{team.tag}</p>
                     </div>
                     {team.ownerId === session.user.id && (
                       <span className="px-2 py-1 bg-yellow-500/20 text-yellow-300 text-xs font-bold rounded border border-yellow-500/30">

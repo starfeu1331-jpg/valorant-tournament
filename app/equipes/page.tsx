@@ -44,7 +44,7 @@ export default async function PublicTeamsPage({
     <div className="min-h-screen py-8">
       {/* Bulles décoratives */}
       <div className="fixed top-20 left-20 w-96 h-96 bg-blue-500/10 rounded-full filter blur-3xl pointer-events-none animate-float" />
-      <div className="fixed bottom-20 right-20 w-96 h-96 bg-primary-500/10 rounded-full filter blur-3xl pointer-events-none animate-float" style={{animationDelay: '1.5s'}} />
+      <div className="fixed bottom-20 right-20 w-96 h-96 bg-red-500/10 rounded-full filter blur-3xl pointer-events-none animate-float" style={{animationDelay: '1.5s'}} />
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="glass-card rounded-4xl p-8 md:p-12 border border-white/20 mb-8">
@@ -65,7 +65,7 @@ export default async function PublicTeamsPage({
                 name="search"
                 defaultValue={search}
                 placeholder="Nom ou tag d'équipe..."
-                className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-2xl text-white placeholder:text-white/50 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 backdrop-blur-sm"
+                className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-2xl text-white placeholder:text-white/50 focus:ring-2 focus:ring-red-500 focus:border-red-500 backdrop-blur-sm"
               />
             </div>
             <div>
@@ -76,7 +76,7 @@ export default async function PublicTeamsPage({
                 id="game"
                 name="game"
                 defaultValue={game}
-                className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-2xl text-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 backdrop-blur-sm"
+                className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-2xl text-white focus:ring-2 focus:ring-red-500 focus:border-red-500 backdrop-blur-sm"
               >
                 <option value="" className="bg-gray-900">Tous les jeux</option>
                 {games.map((g) => (
@@ -116,13 +116,13 @@ export default async function PublicTeamsPage({
               <Link
                 key={team.id}
                 href={`/equipes/${team.id}`}
-                className="glass-card rounded-3xl border border-white/20 hover:border-primary-500/50 transition-all card-hover group"
+                className="glass-card rounded-3xl border border-white/20 hover:border-red-500/50 transition-all card-hover group"
               >
                 <div className="p-6">
                   <div className="flex items-start justify-between mb-4">
                     <div>
                       <h3 className="text-xl font-bold text-white group-hover:text-gradient transition-all">{team.name}</h3>
-                      <p className="text-primary-400 font-bold">{team.tag}</p>
+                      <p className="text-red-400 font-bold">{team.tag}</p>
                     </div>
                   </div>
 

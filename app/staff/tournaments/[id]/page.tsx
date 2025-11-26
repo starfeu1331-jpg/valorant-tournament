@@ -85,7 +85,7 @@ export default async function ManageTournamentPage({
       {/* Header */}
       <div className="relative z-10 border-b border-white/10 bg-black/30 backdrop-blur-md">
         <div className="container mx-auto px-4 py-6">
-          <Link href="/staff" className="text-primary-400 hover:text-primary-300 mb-2 inline-block">
+          <Link href="/staff" className="text-red-400 hover:text-red-300 mb-2 inline-block">
             ← Retour au dashboard
           </Link>
           <h1 className="text-3xl font-bold text-white">{tournament.name}</h1>
@@ -401,7 +401,8 @@ export default async function ManageTournamentPage({
                               {match.teamA && match.teamB && (
                                 <Link href={`/staff/matches/${match.id}`}>
                                   <Button className="bg-white/5 border border-white/20 text-white hover:bg-white/10 rounded-xl" size="sm">
-                                    Gérer
+                                    <span className="md:hidden">⚙️</span>
+                                    <span className="hidden md:inline">Gérer</span>
                                   </Button>
                                 </Link>
                               )}

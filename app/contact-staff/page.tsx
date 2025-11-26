@@ -130,14 +130,14 @@ export default async function ContactStaffPage() {
           <form action={createStaffConversation} className="space-y-6">
             <div>
               <label htmlFor="subject" className="block text-sm font-bold text-white mb-2">
-                Sujet <span className="text-primary-400">*</span>
+                Sujet <span className="text-red-400">*</span>
               </label>
               <input
                 type="text"
                 id="subject"
                 name="subject"
                 maxLength={100}
-                className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-2xl text-white placeholder:text-white/50 focus:ring-2 focus:ring-primary-500 backdrop-blur-sm"
+                className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-2xl text-white placeholder:text-white/50 focus:ring-2 focus:ring-red-500 backdrop-blur-sm"
                 placeholder="Ex: Question sur un tournoi, problème technique..."
                 required
               />
@@ -148,13 +148,13 @@ export default async function ContactStaffPage() {
 
             <div>
               <label htmlFor="content" className="block text-sm font-bold text-white mb-2">
-                Message <span className="text-primary-400">*</span>
+                Message <span className="text-red-400">*</span>
               </label>
               <textarea
                 id="content"
                 name="content"
                 rows={8}
-                className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-2xl text-white placeholder:text-white/50 focus:ring-2 focus:ring-primary-500 backdrop-blur-sm"
+                className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-2xl text-white placeholder:text-white/50 focus:ring-2 focus:ring-red-500 backdrop-blur-sm"
                 placeholder="Décrivez votre demande en détail..."
                 required
               />
@@ -174,7 +174,7 @@ export default async function ContactStaffPage() {
             </div>
 
             <div className="flex gap-3">
-              <Button type="submit" className="flex-1 bg-gradient-to-r from-primary-500 to-primary-600">
+              <Button type="submit" className="flex-1 bg-gradient-to-r from-red-500 to-red-600">
                 Envoyer ma demande
               </Button>
               <Link href="/">

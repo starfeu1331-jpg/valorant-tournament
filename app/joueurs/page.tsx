@@ -38,7 +38,7 @@ export default async function PublicPlayersPage({
     <div className="min-h-screen py-8">
       {/* Bulles décoratives */}
       <div className="fixed top-20 right-20 w-96 h-96 bg-purple-500/10 rounded-full filter blur-3xl pointer-events-none animate-float" />
-      <div className="fixed bottom-20 left-20 w-96 h-96 bg-primary-500/10 rounded-full filter blur-3xl pointer-events-none animate-float" style={{animationDelay: '1.5s'}} />
+      <div className="fixed bottom-20 left-20 w-96 h-96 bg-red-500/10 rounded-full filter blur-3xl pointer-events-none animate-float" style={{animationDelay: '1.5s'}} />
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="glass-card rounded-4xl p-8 md:p-12 border border-white/20 mb-8">
@@ -59,7 +59,7 @@ export default async function PublicPlayersPage({
                 name="search"
                 defaultValue={search}
                 placeholder="Nom d'utilisateur..."
-                className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-2xl text-white placeholder:text-white/50 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 backdrop-blur-sm"
+                className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-2xl text-white placeholder:text-white/50 focus:ring-2 focus:ring-red-500 focus:border-red-500 backdrop-blur-sm"
               />
             </div>
             <div>
@@ -70,7 +70,7 @@ export default async function PublicPlayersPage({
                 id="role"
                 name="role"
                 defaultValue={roleFilter}
-                className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-2xl text-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 backdrop-blur-sm"
+                className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-2xl text-white focus:ring-2 focus:ring-red-500 focus:border-red-500 backdrop-blur-sm"
               >
                 <option value="" className="bg-gray-900">Tous les rôles</option>
                 <option value="PLAYER" className="bg-gray-900">Joueur</option>
@@ -108,7 +108,7 @@ export default async function PublicPlayersPage({
               <Link
                 key={user.id}
                 href={`/joueurs/${user.id}`}
-                className="glass-card rounded-3xl border border-white/20 hover:border-primary-500/50 transition-all card-hover p-6"
+                className="glass-card rounded-3xl border border-white/20 hover:border-red-500/50 transition-all card-hover p-6"
               >
                 <div className="flex flex-col items-center">
                   {user.image && (
