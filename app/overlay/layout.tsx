@@ -7,8 +7,9 @@ export default function OverlayLayout({
   children: ReactNode
 }) {
   return (
-    <html lang="fr" className="bg-transparent">
-      <body className="bg-transparent">
+    <html lang="fr">
+      <head />
+      <body style={{ margin: 0, padding: 0, background: 'transparent' }}>
         {children}
       </body>
     </html>
