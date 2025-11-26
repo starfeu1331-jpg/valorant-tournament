@@ -39,7 +39,7 @@ export default function RootLayout({
                 alt="Background"
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/80 to-black/90" />
+              <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/60 to-black/70" />
             </div>
             {children}
           </main>
